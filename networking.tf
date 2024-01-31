@@ -10,20 +10,34 @@ resource "oci_core_vcn" "web" {
 }
 
 # * Create a public subnet for web
-# resource "oci_core_subnet" "subnet-public-web" {
+resource "oci_core_subnet" "web_public" {
 
-#   cidr_block     = "10.16.1.0/24"
-#   compartment_id = local.constants.compartment_id_production
-#   vcn_id         = oci_core_vcn.prod-web-vcn.id
+  cidr_block     = "10.16.1.0/24"
+  compartment_id = data.doppler_secrets.prod_main.map.OCI_HELIOS_COMPARTMENT_PRODUCTION_ID
+  vcn_id         = oci_core_vcn.web.id
 
-#   display_name               = "subnet-public-web"
-#   dns_label                  = "publicweb"
-#   prohibit_public_ip_on_vnic = false
-#   route_table_id             = oci_core_vcn.prod-web-vcn.default_route_table_id
-#   security_list_ids          = [oci_core_vcn.prod-web-vcn.default_security_list_id, oci_core_security_list.oci_web_security_list.id]
+  display_name               = "subnet-public-web"
+  dns_label                  = "publicweb"
+  prohibit_public_ip_on_vnic = false
+  route_table_id             = oci_core_vcn.web.default_route_table_id
+  security_list_ids          = [oci_core_vcn.web.default_security_list_id, oci_core_security_list.web_main.id]
 
-#   depends_on = [
-#     oci_core_vcn.prod-web-vcn,
-#     oci_core_security_list.oci_web_security_list
-#   ]
-# }
+  depends_on = [
+    oci_core_vcn.web,
+    oci_core_security_list.web_main
+  ]
+}
+
+# * Create a main Internet gateway for the compartment
+resource "oci_core_internet_gateway" "prod" {
+
+  compartment_id = data.doppler_secrets.prod_main.map.OCI_HELIOS_COMPARTMENT_PRODUCTION_ID
+  vcn_id         = oci_core_vcn.web.id
+
+  enabled      = true
+  display_name = "prod-ig"
+
+  depends_on = [
+    oci_core_vcn.web
+  ]
+}
