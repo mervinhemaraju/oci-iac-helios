@@ -1,5 +1,5 @@
 # * Create a virtual cloud network for OCI
-resource "oci_core_vcn" "prod-web-vcn" {
+resource "oci_core_vcn" "web" {
 
   compartment_id = local.constants.compartment_id_production
 

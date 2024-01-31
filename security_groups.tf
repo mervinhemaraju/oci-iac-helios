@@ -2,7 +2,7 @@
 resource "oci_core_security_list" "web_main" {
 
   compartment_id = local.constants.compartment_id_production
-  vcn_id         = oci_core_vcn.prod-web-vcn.id
+  vcn_id         = oci_core_vcn.web.id
 
   display_name = "web-security-list"
 
