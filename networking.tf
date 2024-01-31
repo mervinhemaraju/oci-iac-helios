@@ -1,13 +1,13 @@
 # * Create a virtual cloud network for OCI
-resource "oci_core_vcn" "web" {
+# resource "oci_core_vcn" "web" {
 
-  compartment_id = local.constants.compartment_id_production
+#   compartment_id = local.constants.compartment_id_production
 
-  cidr_blocks    = ["10.16.0.0/16"]
-  display_name   = "web-vcn"
-  dns_label      = "web"
-  is_ipv6enabled = false
-}
+#   cidr_blocks    = ["10.16.0.0/16"]
+#   display_name   = "web-vcn"
+#   dns_label      = "web"
+#   is_ipv6enabled = false
+# }
 
 # * Create a public subnet for web
 # resource "oci_core_subnet" "subnet-public-web" {
