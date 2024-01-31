@@ -1,6 +1,6 @@
 # Creates a zero spend budget
 resource "oci_budget_budget" "oci_zero_spend_budget" {
-  compartment_id = data.doppler_secrets.this.map.OCI_HELIOS_COMPARTMENT_ROOT_ID
+  compartment_id = data.doppler_secrets.prod_main.map.OCI_HELIOS_COMPARTMENT_ROOT_ID
   amount         = 1
   reset_period   = "MONTHLY"
 
