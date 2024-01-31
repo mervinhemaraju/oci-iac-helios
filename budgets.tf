@@ -8,7 +8,7 @@ resource "oci_budget_budget" "oci_zero_spend_budget" {
   display_name = "zero-spend-budget"
   target_type  = "COMPARTMENT"
   targets = [
-    local.constants.compartment_id_production
+    data.doppler_secrets.prod_main.map.OCI_HELIOS_COMPARTMENT_PRODUCTION_ID
   ]
 }
 
