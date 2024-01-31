@@ -7,6 +7,7 @@ provider "oci" {
   region       = "af-johannesburg-1"
 }
 
+# * Infisical Provider for Infisical Secrets Manager
 provider "infisical" {
   service_token = var.token_infisical_iac_cloud_main
 }
