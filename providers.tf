@@ -11,6 +11,12 @@ provider "oci" {
   fingerprint  = data.doppler_secrets.this.map.OCI_HELIOS_FINGERPRINT
   private_key  = data.doppler_secrets.this.map.OCI_HELIOS_PRIVATE_KEY
   region       = "af-johannesburg-1"
+
+  ignore_defined_tags = [
+    "Oracle-Tags.CreatedBy",
+    "Oracle-Tags.CreatedOn",
+    "My-Tags.AwesomeTag"
+  ]
 }
 
 # * The Terraform Module
