@@ -9,7 +9,7 @@ data "oci_identity_availability_domain" "availability_domain" {
 
 # * Gets the OCID of the private address
 data "oci_core_private_ips" "web_01" {
-  ip_address = local.constants.compute.ip_address.web_01
+  ip_address = local.constants.compute.ip_address.web_01.private
   subnet_id  = oci_core_subnet.web_public.id
 
   depends_on = [
@@ -20,7 +20,7 @@ data "oci_core_private_ips" "web_01" {
 
 # * Gets the OCID of the private address
 data "oci_core_private_ips" "web_02" {
-  ip_address = local.constants.compute.ip_address.web_02
+  ip_address = local.constants.compute.ip_address.web_02.private
   subnet_id  = oci_core_subnet.web_public.id
 
   depends_on = [
