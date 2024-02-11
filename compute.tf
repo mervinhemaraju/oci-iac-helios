@@ -14,7 +14,7 @@ resource "oci_core_instance" "web_01" {
   create_vnic_details {
     subnet_id        = oci_core_subnet.web_public.id
     assign_public_ip = false
-    private_ip       = local.constants.compute.ip_address.private.web_01
+    private_ip       = local.constants.compute.ip_address.web_01.private
   }
 
   source_details {
@@ -42,7 +42,7 @@ resource "oci_core_instance" "web_02" {
   create_vnic_details {
     subnet_id        = oci_core_subnet.web_public.id
     assign_public_ip = false
-    private_ip       = local.constants.compute.ip_address.private.web_02
+    private_ip       = local.constants.compute.ip_address.web_02.private
   }
 
   source_details {
