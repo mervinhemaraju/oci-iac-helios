@@ -43,4 +43,18 @@ resource "oci_core_security_list" "web_main" {
       min = 443
     }
   }
+
+  ingress_security_rules {
+
+    source      = "0.0.0.0/0"
+    source_type = "CIDR_BLOCK"
+    protocol    = 6 #* TCP protocol code
+
+    description = "Inbound Splash Traffic"
+
+    tcp_options {
+      max = 8050
+      min = 8050
+    }
+  }
 }
