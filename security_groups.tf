@@ -68,7 +68,7 @@ resource "oci_core_security_list" "db_main" {
 
   egress_security_rules {
 
-    destination      = "10.16.0.0/0"
+    destination      = "10.16.0.0/16"
     destination_type = "CIDR_BLOCK"
     protocol         = "all"
 
@@ -78,7 +78,7 @@ resource "oci_core_security_list" "db_main" {
 
   ingress_security_rules {
 
-    source      = "10.16.0.0/0"
+    source      = "10.16.0.0/16"
     source_type = "CIDR_BLOCK"
     protocol    = "all"
 
