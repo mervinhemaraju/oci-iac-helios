@@ -7,7 +7,8 @@ locals {
     compute = {
 
       image = {
-        ubuntu_oci = "ocid1.image.oc1.af-johannesburg-1.aaaaaaaa7njfmfxcybo66dwsn4u6asz5ecsszyto56ufbltkp7kugixnctxa"
+        ubuntu_oci        = "ocid1.image.oc1.af-johannesburg-1.aaaaaaaa7njfmfxcybo66dwsn4u6asz5ecsszyto56ufbltkp7kugixnctxa"
+        centos_stream_oci = "ocid1.image.oc1.af-johannesburg-1.aaaaaaaaqtgzhnzsg3pu6zl57crqijf3tidkp7j35szwl573thxcfrl53jva"
       }
 
       ip_address = {
@@ -16,8 +17,8 @@ locals {
           private = "10.16.1.223"
         }
 
-        web_02 = {
-          private = "10.16.1.224"
+        db_01 = {
+          private = "10.16.2.223"
         }
       }
     }
