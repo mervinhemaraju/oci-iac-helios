@@ -17,14 +17,3 @@ data "oci_core_private_ips" "web_01" {
     oci_core_subnet.web_public
   ]
 }
-
-# * Gets the OCID of the private address
-# data "oci_core_private_ips" "web_02" {
-#   ip_address = local.constants.compute.ip_address.web_02.private
-#   subnet_id  = oci_core_subnet.web_public.id
-
-#   depends_on = [
-#     oci_core_instance.web_02,
-#     oci_core_subnet.web_public
-#   ]
-# }
