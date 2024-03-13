@@ -58,30 +58,3 @@ resource "oci_core_security_list" "web_main" {
     }
   }
 }
-
-resource "oci_core_security_list" "db_main" {
-
-  compartment_id = data.doppler_secrets.prod_main.map.OCI_HELIOS_COMPARTMENT_PRODUCTION_ID
-  vcn_id         = oci_core_vcn.web.id
-
-  display_name = "db-security-list"
-
-  egress_security_rules {
-
-    destination      = "10.16.0.0/16"
-    destination_type = "CIDR_BLOCK"
-    protocol         = "all"
-
-    description = "Allow all outbound traffic on web-subnet"
-
-  }
-
-  ingress_security_rules {
-
-    source      = "10.16.0.0/16"
-    source_type = "CIDR_BLOCK"
-    protocol    = "all"
-
-    description = "Allow all outbound traffic on web-subnet"
-  }
-}
