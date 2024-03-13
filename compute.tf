@@ -13,7 +13,7 @@ resource "oci_core_instance" "web_01" {
 
   create_vnic_details {
     subnet_id        = oci_core_subnet.web_public.id
-    assign_public_ip = false
+    assign_public_ip = true
     private_ip       = local.constants.compute.ip_address.web_01.private
   }
 
