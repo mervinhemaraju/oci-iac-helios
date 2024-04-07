@@ -1,22 +1,65 @@
+
 locals {
 
-  constants = {
-    # compartment_id_production = data.doppler_secrets.prod_main.map.OCI_HELIOS_COMPARTMENT_PRODUCTION_ID
+  tags = {
+    defaults = {
+      "Creator"     = "mervin.hemaraju",
+      "Owner"       = "mervin.hemaraju",
+      "Terraform"   = "Yes",
+      "Project"     = "https://github.com/mervinhemaraju/oci-iac-helios",
+      "Environment" = "Production"
+    }
+  }
 
+  networking = {
 
+    cidr = {
+      vcn = {
+        database = "10.16.0.0/16"
+      }
+
+      subnets = {
+        public_database  = "10.16.100.0/24"
+        private_database = "10.16.1.0/24"
+      }
+    }
+    # ip_address = {
+    #   web_01 = "10.15.100.10"
+    #   web_02 = "10.15.100.20"
+    # }
+  }
+
+  values = {
     compute = {
 
-      image = {
-        ubuntu_oci        = "ocid1.image.oc1.af-johannesburg-1.aaaaaaaa7njfmfxcybo66dwsn4u6asz5ecsszyto56ufbltkp7kugixnctxa"
-        centos_stream_oci = "ocid1.image.oc1.af-johannesburg-1.aaaaaaaaqtgzhnzsg3pu6zl57crqijf3tidkp7j35szwl573thxcfrl53jva"
-      }
+      shape = "VM.Standard.A1.Flex"
 
-      ip_address = {
+      # web_01 = {
+      #   name = "web-01"
+      # }
 
-        web_01 = {
-          private = "10.16.1.223"
+      # web_02 = {
+      #   name = "web-02"
+      # }
+
+      plugins_config = [
+        {
+          name          = "Bastion"
+          desired_state = "ENABLED"
+        },
+        {
+          name          = "OS Management Service Agent"
+          desired_state = "ENABLED"
+        },
+        {
+          name          = "Compute Instance Run Command"
+          desired_state = "ENABLED"
+        },
+        {
+          name          = "Compute Instance Monitoring"
+          desired_state = "ENABLED"
         }
-      }
+      ]
     }
   }
 }

@@ -10,7 +10,7 @@ provider "oci" {
   user_ocid    = data.doppler_secrets.prod_main.map.OCI_HELIOS_USER_OCID
   fingerprint  = data.doppler_secrets.prod_main.map.OCI_HELIOS_FINGERPRINT
   private_key  = data.doppler_secrets.prod_main.map.OCI_HELIOS_PRIVATE_KEY
-  region       = "af-johannesburg-1"
+  region       = var.region
 }
 
 # * The Terraform Module
@@ -23,7 +23,8 @@ terraform {
       source = "DopplerHQ/doppler"
     }
     oci = {
-      source = "oracle/oci"
+      source  = "oracle/oci"
+      version = "5.34.0"
     }
   }
 }
