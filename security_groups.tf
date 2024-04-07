@@ -1,10 +1,38 @@
-
-resource "oci_core_security_list" "web_main" {
+resource "oci_core_security_list" "private_database" {
 
   compartment_id = data.doppler_secrets.prod_main.map.OCI_HELIOS_COMPARTMENT_PRODUCTION_ID
-  vcn_id         = oci_core_vcn.web.id
+  vcn_id         = oci_core_vcn.database.id
 
-  display_name = "web-security-list"
+  display_name = "private-database-sl"
+
+  egress_security_rules {
+
+    destination      = local.networking.cidr.vcn.database
+    destination_type = "CIDR_BLOCK"
+    protocol         = "all"
+
+    description = "Allow all traffic for the vcn's cidr block."
+
+  }
+
+  ingress_security_rules {
+
+    source      = local.networking.cidr.vcn.database
+    source_type = "CIDR_BLOCK"
+    protocol    = "all"
+
+    description = "Allow all traffic for the vcn's cidr block."
+  }
+
+  freeform_tags = local.tags.defaults
+}
+
+resource "oci_core_security_list" "public_database" {
+
+  compartment_id = data.doppler_secrets.prod_main.map.OCI_HELIOS_COMPARTMENT_PRODUCTION_ID
+  vcn_id         = oci_core_vcn.database.id
+
+  display_name = "public-database-sl"
 
   egress_security_rules {
 
@@ -18,43 +46,12 @@ resource "oci_core_security_list" "web_main" {
 
   ingress_security_rules {
 
-    source      = "0.0.0.0/0"
+    source      = local.networking.cidr.vcn.database
     source_type = "CIDR_BLOCK"
-    protocol    = 6 #* TCP protocol code
+    protocol    = "all"
 
-    description = "Inbound HTTP Traffic"
-
-    tcp_options {
-      max = 80
-      min = 80
-    }
+    description = "Allow all traffic for the vcn's cidr block."
   }
 
-  ingress_security_rules {
-
-    source      = "0.0.0.0/0"
-    source_type = "CIDR_BLOCK"
-    protocol    = 6 #* TCP protocol code
-
-    description = "Inbound HTTPS Traffic"
-
-    tcp_options {
-      max = 443
-      min = 443
-    }
-  }
-
-  ingress_security_rules {
-
-    source      = "0.0.0.0/0"
-    source_type = "CIDR_BLOCK"
-    protocol    = 6 #* TCP protocol code
-
-    description = "Inbound Splash Traffic"
-
-    tcp_options {
-      max = 8050
-      min = 8050
-    }
-  }
+  freeform_tags = local.tags.defaults
 }
