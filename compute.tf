@@ -19,7 +19,7 @@ resource "oci_core_instance" "mongo" {
 
   create_vnic_details {
     subnet_id              = oci_core_subnet.public_database.id
-    assign_public_ip       = true
+    assign_public_ip       = false
     private_ip             = local.networking.ip_address.mongo
     skip_source_dest_check = true
   }
