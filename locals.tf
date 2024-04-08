@@ -23,10 +23,9 @@ locals {
         private_database = "10.16.1.0/24"
       }
     }
-    # ip_address = {
-    #   web_01 = "10.15.100.10"
-    #   web_02 = "10.15.100.20"
-    # }
+    ip_address = {
+      mongo = "10.16.100.10"
+    }
   }
 
   values = {
@@ -34,13 +33,9 @@ locals {
 
       shape = "VM.Standard.A1.Flex"
 
-      # web_01 = {
-      #   name = "web-01"
-      # }
-
-      # web_02 = {
-      #   name = "web-02"
-      # }
+      mongo = {
+        name = "mongo"
+      }
 
       plugins_config = [
         {
