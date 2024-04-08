@@ -4,7 +4,7 @@
 resource "oci_core_instance" "mongo" {
 
   availability_domain = data.oci_identity_availability_domain.this.name
-  compartment_id      = data.doppler_secrets.prod_main.map.OCI_GAIA_COMPARTMENT_PRODUCTION_ID
+  compartment_id      = data.doppler_secrets.prod_main.map.OCI_HELIOS_COMPARTMENT_PRODUCTION_ID
   fault_domain        = data.oci_identity_fault_domains.this.fault_domains[0].name
 
   display_name = local.values.compute.mongo.name
