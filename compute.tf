@@ -26,7 +26,7 @@ resource "oci_core_instance" "mongo" {
 
   source_details {
     source_type             = "image"
-    source_id               = data.oci_core_images.oracle_linux.images[0].id
+    source_id               = local.values.compute.image
     boot_volume_size_in_gbs = "200"
     boot_volume_vpus_per_gb = 120
   }
