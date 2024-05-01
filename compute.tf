@@ -6,7 +6,7 @@ resource "oci_core_instance" "mongo" {
   compartment_id = local.values.compartments.production
 
   availability_domain = data.oci_identity_availability_domain.this.name
-  fault_domain        = data.oci_identity_fault_domains.this.fault_domains[0].name
+  # fault_domain        = data.oci_identity_fault_domains.this.fault_domains[0].name
 
   display_name = local.values.compute.mongo.name
 
