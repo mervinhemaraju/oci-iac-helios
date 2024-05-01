@@ -19,13 +19,13 @@ data "oci_identity_fault_domains" "this" {
   availability_domain = data.oci_identity_availability_domain.this.name
 }
 
-# # Get ths private ips for mongo compute
-# data "oci_core_private_ips" "mongo" {
-#   ip_address = local.networking.ip_address.mongo
-#   subnet_id  = oci_core_subnet.public_database.id
+# Get ths private ips for mongo compute
+data "oci_core_private_ips" "mongo" {
+  ip_address = local.networking.ip_address.mongo
+  subnet_id  = oci_core_subnet.public_database.id
 
-#   depends_on = [
-#     oci_core_instance.mongo,
-#     oci_core_subnet.public_database
-#   ]
-# }
+  depends_on = [
+    oci_core_instance.mongo,
+    oci_core_subnet.public_database
+  ]
+}

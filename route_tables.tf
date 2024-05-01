@@ -1,21 +1,22 @@
-# # Route Tables
-# resource "oci_core_route_table" "public_database" {
-#   compartment_id = data.doppler_secrets.prod_main.map.OCI_HELIOS_COMPARTMENT_PRODUCTION_ID
-#   vcn_id         = oci_core_vcn.database.id
+# Route Tables
+resource "oci_core_route_table" "public_database" {
 
-#   display_name = "route-table-public-database"
+  compartment_id = local.values.compartments.production
+  vcn_id         = oci_core_vcn.database.id
 
-#   route_rules {
+  display_name = "route-table-public-database"
 
-#     network_entity_id = oci_core_internet_gateway.prod.id
+  route_rules {
 
-#     description      = "Route to the Internet Gateway (Internet Access)"
-#     destination      = "0.0.0.0/0"
-#     destination_type = "CIDR_BLOCK"
-#   }
+    network_entity_id = oci_core_internet_gateway.database.id
 
-#   freeform_tags = local.tags.defaults
-# }
+    description      = "Route to the Internet Gateway (Internet Access)"
+    destination      = "0.0.0.0/0"
+    destination_type = "CIDR_BLOCK"
+  }
+
+  freeform_tags = local.tags.defaults
+}
 
 # resource "oci_core_route_table" "private_database" {
 #   compartment_id = data.doppler_secrets.prod_main.map.OCI_HELIOS_COMPARTMENT_PRODUCTION_ID
@@ -27,11 +28,11 @@
 # }
 
 
-# # Route Table Attachments
-# resource "oci_core_route_table_attachment" "public_database" {
-#   subnet_id      = oci_core_subnet.public_database.id
-#   route_table_id = oci_core_route_table.public_database.id
-# }
+# Route Table Attachments
+resource "oci_core_route_table_attachment" "public_database" {
+  subnet_id      = oci_core_subnet.public_database.id
+  route_table_id = oci_core_route_table.public_database.id
+}
 
 # resource "oci_core_route_table_attachment" "private_database" {
 #   subnet_id      = oci_core_subnet.private_database.id

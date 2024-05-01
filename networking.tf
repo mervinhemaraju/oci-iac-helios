@@ -27,8 +27,6 @@ resource "oci_core_subnet" "public_database" {
   prohibit_public_ip_on_vnic = false
   security_list_ids          = [oci_core_default_security_list.default.id]
 
-  route_table_id = oci_core_default_route_table.default.id
-
   freeform_tags = local.tags.defaults
 
   depends_on = [
