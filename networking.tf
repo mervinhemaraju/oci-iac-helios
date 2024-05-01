@@ -1,7 +1,7 @@
 # Create a virtual cloud network for OCI
 resource "oci_core_vcn" "database" {
 
-  compartment_id = data.doppler_secrets.prod_main.map.OCI_HELIOS_COMPARTMENT_PRODUCTION_ID
+  compartment_id = local.values.compartments.production
 
   cidr_blocks = [
     local.networking.cidr.vcn.database
@@ -14,42 +14,63 @@ resource "oci_core_vcn" "database" {
   freeform_tags = local.tags.defaults
 }
 
-# Create a public web subnet
-resource "oci_core_subnet" "public_database" {
+# # Create a public web subnet
+# resource "oci_core_subnet" "public_database" {
 
-  cidr_block     = local.networking.cidr.subnets.public_database
-  compartment_id = data.doppler_secrets.prod_main.map.OCI_HELIOS_COMPARTMENT_PRODUCTION_ID
-  vcn_id         = oci_core_vcn.database.id
+#   compartment_id = local.values.compartments.production
 
-  display_name               = "public-database"
-  dns_label                  = "publicdatabase"
-  prohibit_public_ip_on_vnic = false
-  security_list_ids          = [oci_core_security_list.public_database.id]
+#   cidr_block = local.networking.cidr.subnets.public_database
+#   vcn_id     = oci_core_vcn.database.id
 
-  freeform_tags = local.tags.defaults
+#   display_name               = "public-database"
+#   dns_label                  = "publicdatabase"
+#   prohibit_public_ip_on_vnic = false
+#   security_list_ids          = [oci_core_security_list.public_database.id]
 
-  depends_on = [
-    oci_core_vcn.database,
-    oci_core_security_list.public_database
-  ]
-}
+#   freeform_tags = local.tags.defaults
 
-# Create a private subnet
+#   depends_on = [
+#     oci_core_vcn.database,
+#     oci_core_security_list.public_database
+#   ]
+# }
+
+# Create a private subnet for the database computes
 resource "oci_core_subnet" "private_database" {
 
-  cidr_block     = local.networking.cidr.subnets.private_database
-  compartment_id = data.doppler_secrets.prod_main.map.OCI_HELIOS_COMPARTMENT_PRODUCTION_ID
-  vcn_id         = oci_core_vcn.database.id
+  compartment_id = local.values.compartments.production
+
+  cidr_block = local.networking.cidr.subnets.private_database
+  vcn_id     = oci_core_vcn.database.id
 
   display_name               = "private-database"
   dns_label                  = "privatedatabase"
   prohibit_public_ip_on_vnic = false
-  security_list_ids          = [oci_core_security_list.private_database.id]
+  security_list_ids          = [oci_core_default_security_list.default.id]
 
   freeform_tags = local.tags.defaults
 
   depends_on = [
-    oci_core_vcn.database,
-    oci_core_security_list.private_database
+    oci_core_vcn.database
+  ]
+}
+
+# Create a private subnet for the bastions
+resource "oci_core_subnet" "private_mgmt" {
+
+  compartment_id = local.values.compartments.production
+
+  cidr_block = local.networking.cidr.subnets.private_mgmt
+  vcn_id     = oci_core_vcn.database.id
+
+  display_name               = "private-mgmt"
+  dns_label                  = "privatemgmt"
+  prohibit_public_ip_on_vnic = false
+  security_list_ids          = [oci_core_default_security_list.default.id]
+
+  freeform_tags = local.tags.defaults
+
+  depends_on = [
+    oci_core_vcn.database
   ]
 }

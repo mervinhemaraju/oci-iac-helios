@@ -20,7 +20,8 @@ terraform {
   required_providers {
 
     doppler = {
-      source = "DopplerHQ/doppler"
+      source  = "DopplerHQ/doppler"
+      version = "1.7.0"
     }
     oci = {
       source  = "oracle/oci"

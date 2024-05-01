@@ -19,16 +19,22 @@ locals {
       }
 
       subnets = {
-        public_database  = "10.16.100.0/24"
-        private_database = "10.16.1.0/24"
+        private_mgmt     = "10.16.10.0/24"
+        private_database = "10.16.20.0/24"
       }
     }
     ip_address = {
-      mongo = "10.16.100.10"
+      mongo = "10.16.20.10"
     }
   }
 
   values = {
+
+    compartments = {
+      production = data.doppler_secrets.prod_main.map.OCI_HELIOS_COMPARTMENT_PRODUCTION_ID
+      root       = data.doppler_secrets.prod_main.map.OCI_HELIOS_COMPARTMENT_ROOT_ID
+    }
+
     compute = {
 
       shape = "VM.Standard.A1.Flex"
