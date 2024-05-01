@@ -22,8 +22,8 @@ resource "oci_core_subnet" "public_database" {
   cidr_block = local.networking.cidr.subnets.public_database
   vcn_id     = oci_core_vcn.database.id
 
-  display_name               = "private-database"
-  dns_label                  = "privatedatabase"
+  display_name               = "public-database"
+  dns_label                  = "publicdatabase"
   prohibit_public_ip_on_vnic = false
   security_list_ids          = [oci_core_default_security_list.default.id]
 
