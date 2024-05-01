@@ -46,7 +46,7 @@ resource "oci_core_subnet" "private_mgmt" {
 
   display_name               = "private-mgmt"
   dns_label                  = "privatemgmt"
-  prohibit_public_ip_on_vnic = false
+  prohibit_public_ip_on_vnic = true
   security_list_ids          = [oci_core_default_security_list.default.id]
 
   route_table_id = oci_core_default_route_table.default.id

@@ -5,7 +5,9 @@ resource "oci_identity_policy" "requestor_drg_management" {
   compartment_id = local.values.compartments.root
   description    = "Allow the requestor to manage DRG in this tenancy"
   name           = "requestor-drg-management"
-  statements     = []
+  statements = [
+    "define group ${oci_identity_group.drg_admins.name} as ${oci_identity_group.drg_admins.id}"
+  ]
 
   freeform_tags = local.tags.defaults
 }
