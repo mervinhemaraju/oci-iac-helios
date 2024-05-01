@@ -1,6 +1,12 @@
 # Define our data source to fetch secrets
 data "doppler_secrets" "prod_main" {}
 
+# Get the main admin user
+data "oci_identity_users" "main_admin" {
+  compartment_id = local.values.compartments.production
+  name           = "Mervin Hemaraju"
+}
+
 # Gets the availability domain from OCI
 data "oci_identity_availability_domain" "this" {
   compartment_id = local.values.compartments.production
