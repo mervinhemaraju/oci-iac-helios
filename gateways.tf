@@ -1,17 +1,15 @@
-# Create a NAT gateway for the database computes
-resource "oci_core_nat_gateway" "database" {
+# Create a main Internet gateway for database
+resource "oci_core_internet_gateway" "database" {
   compartment_id = local.values.compartments.production
   vcn_id         = oci_core_vcn.database.id
 
-  display_name = "database-nat"
-
-  public_ip_id = oci_core_public_ip.database.id
+  enabled      = true
+  display_name = "database-ig"
 
   freeform_tags = local.tags.defaults
 }
 
 # Create a Dynamic Routing Gateway for VCN peering
-
 resource "oci_core_drg" "database" {
   compartment_id = local.values.compartments.production
 

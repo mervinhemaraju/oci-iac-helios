@@ -19,12 +19,12 @@ locals {
       }
 
       subnets = {
-        private_mgmt     = "10.16.10.0/24"
-        private_database = "10.16.20.0/24"
+        private_mgmt    = "10.16.10.0/24"
+        public_database = "10.16.100.0/24"
       }
     }
     ip_address = {
-      mongo = "10.16.20.10"
+      mongo = "10.16.100.10"
     }
   }
 
