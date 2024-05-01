@@ -3,7 +3,7 @@ data "doppler_secrets" "prod_main" {}
 
 # Get the main admin user
 data "oci_identity_users" "main_admin" {
-  compartment_id = local.values.compartments.production
+  compartment_id = local.values.compartments.root
   name           = "Mervin Hemaraju"
 }
 
