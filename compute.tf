@@ -22,6 +22,10 @@ resource "oci_core_instance" "mongo" {
     assign_public_ip       = false
     private_ip             = local.networking.ip_address.mongo
     skip_source_dest_check = true
+
+    nsg_ids = [
+      oci_core_network_security_group.mongo.id
+    ]
   }
 
   source_details {
