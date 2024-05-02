@@ -15,6 +15,15 @@ resource "oci_core_route_table" "public_database" {
     destination_type = "CIDR_BLOCK"
   }
 
+  route_rules {
+
+    network_entity_id = oci_core_drg.database.id
+
+    description      = "Route to the web VCN (VCN Peering to GAIA)"
+    destination      = "10.15.0.0/16"
+    destination_type = "CIDR_BLOCK"
+  }
+
   freeform_tags = local.tags.defaults
 }
 
