@@ -72,33 +72,5 @@ resource "oci_core_security_list" "public_database" {
     description = "Allow all traffic for the web vcn's cidr block."
   }
 
-  ingress_security_rules {
-
-    source      = "0.0.0.0/0"
-    source_type = "CIDR_BLOCK"
-    protocol    = 6 # TCP
-
-    tcp_options {
-      min = 80
-      max = 80
-    }
-
-    description = "Allow HTTP traffic from the Internet"
-  }
-
-  ingress_security_rules {
-
-    source      = "0.0.0.0/0"
-    source_type = "CIDR_BLOCK"
-    protocol    = 6 # TCP
-
-    tcp_options {
-      min = 443
-      max = 443
-    }
-
-    description = "Allow HTTPS traffic from the Internet"
-  }
-
   freeform_tags = local.tags.defaults
 }
