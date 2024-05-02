@@ -13,12 +13,6 @@ data "oci_identity_availability_domain" "this" {
   ad_number      = 1
 }
 
-# Gets the fault domains from this AZ
-data "oci_identity_fault_domains" "this" {
-  compartment_id      = local.values.compartments.production
-  availability_domain = data.oci_identity_availability_domain.this.name
-}
-
 # Get ths private ips for mongo compute
 data "oci_core_private_ips" "mongo" {
   ip_address = local.networking.ip_address.mongo

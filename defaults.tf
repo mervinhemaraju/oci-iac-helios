@@ -26,4 +26,17 @@ resource "oci_core_default_security_list" "default" {
 resource "oci_core_default_route_table" "default" {
   compartment_id             = local.values.compartments.production
   manage_default_resource_id = oci_core_vcn.database.default_route_table_id
+
+
+  dynamic "route_rules" {
+    for_each = data.oci_core_private_ips.mongo.private_ips
+    content {
+
+      network_entity_id = route_rules.value["id"]
+
+      description      = "Route to mongo compute"
+      destination      = format("%s/32", route_rules.value["ip_address"])
+      destination_type = "CIDR_BLOCK"
+    }
+  }
 }
