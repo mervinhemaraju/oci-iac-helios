@@ -23,3 +23,13 @@ data "oci_core_private_ips" "mongo" {
     oci_core_subnet.public_database
   ]
 }
+
+
+# > CROSS ACCOUNT Data Sources < #
+data "oci_identity_groups" "vcn_admins_gaia" {
+
+  provider = oci.gaia
+
+  compartment_id = local.values.compartments_gaia.root
+  name           = "vcn-admins"
+}

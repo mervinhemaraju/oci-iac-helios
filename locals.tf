@@ -36,6 +36,13 @@ locals {
       root       = data.doppler_secrets.prod_main.map.OCI_HELIOS_COMPARTMENT_ROOT_ID
     }
 
+    tenancy_gaia = data.doppler_secrets.prod_main.map.OCI_GAIA_TENANCY_OCID
+
+    compartments_gaia = {
+      production = data.doppler_secrets.prod_main.map.OCI_GAIA_COMPARTMENT_PRODUCTION_ID
+      root       = data.doppler_secrets.prod_main.map.OCI_GAIA_COMPARTMENT_ROOT_ID
+    }
+
     compute = {
 
       shape = "VM.Standard.A1.Flex"

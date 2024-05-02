@@ -13,6 +13,15 @@ provider "oci" {
   region       = var.region
 }
 
+provider "oci" {
+  alias        = "gaia"
+  tenancy_ocid = data.doppler_secrets.prod_main.map.OCI_GAIA_TENANCY_OCID
+  user_ocid    = data.doppler_secrets.prod_main.map.OCI_GAIA_USER_OCID
+  fingerprint  = data.doppler_secrets.prod_main.map.OCI_GAIA_FINGERPRINT
+  private_key  = data.doppler_secrets.prod_main.map.OCI_GAIA_PRIVATE_KEY
+  region       = var.region
+}
+
 # * The Terraform Module
 terraform {
 
