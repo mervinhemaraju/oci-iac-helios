@@ -1,6 +1,6 @@
 resource "oci_core_security_list" "private_mgmt" {
 
-  compartment_id = data.doppler_secrets.prod_main.map.OCI_HELIOS_COMPARTMENT_PRODUCTION_ID
+  compartment_id = local.values.compartments.production
   vcn_id         = oci_core_vcn.database.id
 
   display_name = "private-mgmt-sl"
@@ -39,7 +39,7 @@ resource "oci_core_security_list" "private_mgmt" {
 
 resource "oci_core_security_list" "public_database" {
 
-  compartment_id = data.doppler_secrets.prod_main.map.OCI_HELIOS_COMPARTMENT_PRODUCTION_ID
+  compartment_id = local.values.compartments.production
   vcn_id         = oci_core_vcn.database.id
 
   display_name = "public-database-sl"

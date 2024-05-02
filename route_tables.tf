@@ -28,7 +28,7 @@ resource "oci_core_route_table" "public_database" {
 }
 
 resource "oci_core_route_table" "private_mgmt" {
-  compartment_id = data.doppler_secrets.prod_main.map.OCI_HELIOS_COMPARTMENT_PRODUCTION_ID
+  compartment_id = local.values.compartments.production
   vcn_id         = oci_core_vcn.database.id
 
   display_name = "route-table-private-mgmt-01"
