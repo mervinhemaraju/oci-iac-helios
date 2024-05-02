@@ -1,24 +1,16 @@
 # Define our data source to fetch secrets
 data "doppler_secrets" "prod_main" {}
 
-# Get the latest Oracle 9 Image
-# data "oci_core_images" "oracle_linux" {
-#   compartment_id           = data.doppler_secrets.prod_main.map.OCI_HELIOS_COMPARTMENT_PRODUCTION_ID
-#   operating_system         = "Oracle Linux"
-#   operating_system_version = "9"
-#   shape                    = local.values.compute.shape
-# }
+# Get the main admin user
+data "oci_identity_users" "main_admin" {
+  compartment_id = local.values.compartments.root
+  name           = "Mervin Hemaraju"
+}
 
 # Gets the availability domain from OCI
 data "oci_identity_availability_domain" "this" {
-  compartment_id = data.doppler_secrets.prod_main.map.OCI_HELIOS_COMPARTMENT_PRODUCTION_ID
+  compartment_id = local.values.compartments.production
   ad_number      = 1
-}
-
-# Gets the fault domains from this AZ
-data "oci_identity_fault_domains" "this" {
-  availability_domain = data.oci_identity_availability_domain.this.name
-  compartment_id      = data.doppler_secrets.prod_main.map.OCI_HELIOS_COMPARTMENT_PRODUCTION_ID
 }
 
 # Get ths private ips for mongo compute
@@ -30,4 +22,14 @@ data "oci_core_private_ips" "mongo" {
     oci_core_instance.mongo,
     oci_core_subnet.public_database
   ]
+}
+
+
+# > CROSS ACCOUNT Data Sources < #
+data "oci_identity_groups" "vcn_admins_gaia" {
+
+  provider = oci.gaia
+
+  compartment_id = local.values.compartments_gaia.root
+  name           = "vcn-admins"
 }

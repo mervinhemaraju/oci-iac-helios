@@ -1,7 +1,9 @@
 resource "oci_bastion_bastion" "private_jump_01" {
+
+  compartment_id = local.values.compartments.production
+
   bastion_type     = "STANDARD"
-  compartment_id   = data.doppler_secrets.prod_main.map.OCI_HELIOS_COMPARTMENT_PRODUCTION_ID
-  target_subnet_id = oci_core_subnet.private_database.id
+  target_subnet_id = oci_core_subnet.private_mgmt.id
 
   max_session_ttl_in_seconds = 10800
   name                       = "private-jump-01"
@@ -12,9 +14,11 @@ resource "oci_bastion_bastion" "private_jump_01" {
 }
 
 resource "oci_bastion_bastion" "private_jump_02" {
+
+  compartment_id = local.values.compartments.production
+
   bastion_type     = "STANDARD"
-  compartment_id   = data.doppler_secrets.prod_main.map.OCI_HELIOS_COMPARTMENT_PRODUCTION_ID
-  target_subnet_id = oci_core_subnet.private_database.id
+  target_subnet_id = oci_core_subnet.private_mgmt.id
 
   max_session_ttl_in_seconds = 10800
   name                       = "private-jump-02"

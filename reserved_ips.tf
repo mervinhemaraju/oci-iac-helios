@@ -1,6 +1,6 @@
 # Create a reserved public IP for the database compute
 resource "oci_core_public_ip" "database" {
-  compartment_id = data.doppler_secrets.prod_main.map.OCI_HELIOS_COMPARTMENT_PRODUCTION_ID
+  compartment_id = local.values.compartments.production
   lifetime       = "RESERVED"
 
   display_name = "res-database"

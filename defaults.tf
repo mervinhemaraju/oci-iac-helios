@@ -1,10 +1,10 @@
-# The defualt resources that comes with a VCN
+# The default resources that comes with a VCN
 resource "oci_core_default_security_list" "default" {
+  compartment_id             = local.values.compartments.production
   manage_default_resource_id = oci_core_vcn.database.default_security_list_id
-  compartment_id             = data.doppler_secrets.prod_main.map.OCI_HELIOS_COMPARTMENT_PRODUCTION_ID
 }
 
 resource "oci_core_default_route_table" "default" {
+  compartment_id             = local.values.compartments.production
   manage_default_resource_id = oci_core_vcn.database.default_route_table_id
-  compartment_id             = data.doppler_secrets.prod_main.map.OCI_HELIOS_COMPARTMENT_PRODUCTION_ID
 }
