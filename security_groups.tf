@@ -1,85 +1,104 @@
-# resource "oci_core_security_list" "private_database" {
+resource "oci_core_security_list" "private_mgmt" {
 
-#   compartment_id = data.doppler_secrets.prod_main.map.OCI_HELIOS_COMPARTMENT_PRODUCTION_ID
-#   vcn_id         = oci_core_vcn.database.id
+  compartment_id = data.doppler_secrets.prod_main.map.OCI_HELIOS_COMPARTMENT_PRODUCTION_ID
+  vcn_id         = oci_core_vcn.database.id
 
-#   display_name = "private-database-sl"
+  display_name = "private-mgmt-sl"
 
-#   egress_security_rules {
+  egress_security_rules {
 
-#     destination      = local.networking.cidr.vcn.database
-#     destination_type = "CIDR_BLOCK"
-#     protocol         = "all"
+    destination      = local.networking.cidr.vcn.database
+    destination_type = "CIDR_BLOCK"
+    protocol         = 6 # TCP
 
-#     description = "Allow all traffic for the vcn's cidr block."
+    tcp_options {
+      min = 22
+      max = 22
+    }
 
-#   }
+    description = "Allow SSH traffic to the database vcn CIDR."
 
-#   ingress_security_rules {
+  }
 
-#     source      = local.networking.cidr.vcn.database
-#     source_type = "CIDR_BLOCK"
-#     protocol    = "all"
+  ingress_security_rules {
 
-#     description = "Allow all traffic for the vcn's cidr block."
-#   }
+    source      = "0.0.0.0/0"
+    source_type = "CIDR_BLOCK"
+    protocol    = 6 # TCP
 
-#   freeform_tags = local.tags.defaults
-# }
+    tcp_options {
+      min = 22
+      max = 22
+    }
 
-# resource "oci_core_security_list" "public_database" {
+    description = "Allow SSH traffic from the Internet to the private mgmt subnet."
+  }
 
-#   compartment_id = data.doppler_secrets.prod_main.map.OCI_HELIOS_COMPARTMENT_PRODUCTION_ID
-#   vcn_id         = oci_core_vcn.database.id
+  freeform_tags = local.tags.defaults
+}
 
-#   display_name = "public-database-sl"
+resource "oci_core_security_list" "public_database" {
 
-#   egress_security_rules {
+  compartment_id = data.doppler_secrets.prod_main.map.OCI_HELIOS_COMPARTMENT_PRODUCTION_ID
+  vcn_id         = oci_core_vcn.database.id
 
-#     destination      = "0.0.0.0/0"
-#     destination_type = "CIDR_BLOCK"
-#     protocol         = "all"
+  display_name = "public-database-sl"
 
-#     description = "Outbound internet traffic"
+  egress_security_rules {
 
-#   }
+    destination      = "0.0.0.0/0"
+    destination_type = "CIDR_BLOCK"
+    protocol         = "all"
 
-#   ingress_security_rules {
+    description = "Allow all outbound traffic to the internet."
 
-#     source      = local.networking.cidr.vcn.database
-#     source_type = "CIDR_BLOCK"
-#     protocol    = "all"
+  }
 
-#     description = "Allow all traffic for the vcn's cidr block."
-#   }
+  ingress_security_rules {
 
-#   ingress_security_rules {
+    source      = local.networking.cidr.vcn.database
+    source_type = "CIDR_BLOCK"
+    protocol    = "all"
 
-#     source      = "0.0.0.0/0"
-#     source_type = "CIDR_BLOCK"
-#     protocol    = 6 # TCP
+    description = "Allow all traffic for the database vcn's cidr block."
+  }
 
-#     tcp_options {
-#       min = 80
-#       max = 80
-#     }
+  ingress_security_rules {
 
-#     description = "Allow HTTP traffic"
-#   }
+    source      = local.networking.cidr.vcn.web
+    source_type = "CIDR_BLOCK"
+    protocol    = "all"
 
-#   ingress_security_rules {
+    description = "Allow all traffic for the web vcn's cidr block."
+  }
 
-#     source      = "0.0.0.0/0"
-#     source_type = "CIDR_BLOCK"
-#     protocol    = 6 # TCP
+  ingress_security_rules {
 
-#     tcp_options {
-#       min = 443
-#       max = 443
-#     }
+    source      = "0.0.0.0/0"
+    source_type = "CIDR_BLOCK"
+    protocol    = 6 # TCP
 
-#     description = "Allow HTTPS traffic"
-#   }
+    tcp_options {
+      min = 80
+      max = 80
+    }
 
-#   freeform_tags = local.tags.defaults
-# }
+    description = "Allow HTTP traffic from the Internet"
+  }
+
+  ingress_security_rules {
+
+    source      = "0.0.0.0/0"
+    source_type = "CIDR_BLOCK"
+    protocol    = 6 # TCP
+
+    tcp_options {
+      min = 443
+      max = 443
+    }
+
+    description = "Allow HTTPS traffic from the Internet"
+  }
+
+  freeform_tags = local.tags.defaults
+}
