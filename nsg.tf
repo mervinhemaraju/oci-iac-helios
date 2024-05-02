@@ -16,7 +16,7 @@ resource "oci_core_network_security_group_security_rule" "http" {
   protocol                  = 6 # TCP
 
   description = "Allow MongoDB traffic from Helios Web servers."
-  source      = "10.15.0.0/0"
+  source      = "10.15.0.0/16"
   source_type = "CIDR_BLOCK"
   stateless   = false
 
