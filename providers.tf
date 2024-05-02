@@ -25,6 +25,9 @@ provider "oci" {
 # * The Terraform Module
 terraform {
 
+  # * The required tf version
+  required_version = "1.4.0"
+
   # * Required providers
   required_providers {
 
