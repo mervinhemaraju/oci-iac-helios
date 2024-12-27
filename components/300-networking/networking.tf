@@ -19,7 +19,7 @@ resource "oci_core_subnet" "public_web" {
 
   compartment_id = local.values.compartments.production
 
-  cidr_block = local.networking.cidr.subnets.web
+  cidr_block = local.networking.cidr.subnets.public_web
   vcn_id     = oci_core_vcn.web.id
 
   display_name               = "public-web"
