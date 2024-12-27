@@ -17,7 +17,7 @@ provider "oci" {
 terraform {
 
   # The required tf version
-  required_version = "1.4.0"
+  required_version = "1.8.7"
 
   # Backend configuration
   backend "s3" {
