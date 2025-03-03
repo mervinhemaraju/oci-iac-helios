@@ -9,6 +9,18 @@ variable "token_doppler_iac_cloud_main" {
   description = "The Doppler token for the secrets manager cloud main repo."
 }
 
+variable "project" {
+  type        = string
+  description = "(optional) describe your variable"
+  default     = "oci-cloud-helios"
+}
+
+variable "component" {
+  type        = string
+  description = "(optional) describe your variable"
+  default     = "billing"
+}
+
 variable "bucket_key_iac" {
   type        = string
   description = "The prefix for the bucket key."
