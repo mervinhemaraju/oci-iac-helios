@@ -21,9 +21,9 @@ terraform {
 
   # Backend configuration
   backend "s3" {
-    region = "eu-west-1"
-    key    = "projects/oci-iac-helios/billing/state.tf"
-    bucket = "mervin-iac-state-files"
+    region = var.bucket_region
+    key    = "${var.buckey_key_prefix_iac}/billing/state.tf"
+    bucket = var.bucket_name
   }
 
   # Required providers
