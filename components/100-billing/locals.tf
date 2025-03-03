@@ -11,4 +11,12 @@ locals {
       "Component"   = "100-billing"
     }
   }
+
+  values = {
+    # tenancy = data.doppler_secrets.prod_main.map.OCI_HELIOS_TENANCY_OCID
+    compartments = {
+      production = data.doppler_secrets.prod_main.map.OCI_HELIOS_COMPARTMENT_PRODUCTION_ID
+      root       = data.doppler_secrets.prod_main.map.OCI_HELIOS_COMPARTMENT_ROOT_ID
+    }
+  }
 }
