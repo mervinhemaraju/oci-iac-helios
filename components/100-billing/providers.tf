@@ -38,7 +38,7 @@ terraform {
     # OCI provider
     oci = {
       source  = "oracle/oci"
-      version = "5.34.0"
+      version = "6.25.0"
     }
 
     # AWS provider
