@@ -20,7 +20,7 @@ resource "oci_budget_alert_rule" "actual_minimum" {
 
 resource "oci_budget_alert_rule" "actual_critical" {
   budget_id      = oci_budget_budget.minimal_spend.id
-  threshold      = 3
+  threshold      = 10
   threshold_type = "ABSOLUTE"
   type           = "ACTUAL"
 
