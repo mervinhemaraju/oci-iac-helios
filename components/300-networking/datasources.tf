@@ -25,4 +25,3 @@ data "oci_core_private_ips" "web_02" {
     oci_core_subnet.public_web
   ]
 }
-

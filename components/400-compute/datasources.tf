@@ -36,4 +36,3 @@ data "oci_core_private_ips" "web_02" {
   ip_address = local.networking.ip_address.web_02
   subnet_id  = data.oci_core_subnets.public_web.subnets[0].id
 }
-
