@@ -21,9 +21,9 @@ terraform {
 
   # Backend configuration
   backend "s3" {
-    region = "eu-west-1"
-    key    = "projects/oci-iac-helios/billing/state.tf"
-    bucket = "mervin-iac-state-files"
+    region = var.bucket_region
+    key    = "${var.bucket_key_prefix_iac}/billing/state.tf"
+    bucket = var.bucket_name
   }
 
   # Required providers
@@ -38,7 +38,7 @@ terraform {
     # OCI provider
     oci = {
       source  = "oracle/oci"
-      version = "5.34.0"
+      version = "6.25.0"
     }
 
     # AWS provider

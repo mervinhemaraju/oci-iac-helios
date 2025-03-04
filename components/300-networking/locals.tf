@@ -8,6 +8,7 @@ locals {
       "terraform"   = "Yes",
       "project"     = "https://github.com/mervinhemaraju/oci-iac-helios",
       "environment" = "Production"
+      "Component"   = "300-networking"
     }
   }
 
