@@ -37,6 +37,45 @@ resource "oci_core_security_list" "private_mgmt" {
   freeform_tags = local.tags.defaults
 }
 
+resource "oci_core_security_list" "private_web" {
+
+  compartment_id = local.values.compartments.production
+  vcn_id         = oci_core_vcn.web.id
+
+  display_name = "private-web-sl"
+
+  egress_security_rules {
+
+    destination      = local.networking.cidr.vcn.web
+    destination_type = "CIDR_BLOCK"
+    protocol         = 6 # TCP
+
+    tcp_options {
+      min = 22
+      max = 22
+    }
+
+    description = "Allow SSH traffic to the web vcn CIDR."
+
+  }
+
+  ingress_security_rules {
+
+    source      = "0.0.0.0/0"
+    source_type = "CIDR_BLOCK"
+    protocol    = 6 # TCP
+
+    tcp_options {
+      min = 22
+      max = 22
+    }
+
+    description = "Allow SSH traffic from the Internet to the private mgmt subnet."
+  }
+
+  freeform_tags = local.tags.defaults
+}
+
 resource "oci_core_security_list" "public_web" {
 
   compartment_id = local.values.compartments.production

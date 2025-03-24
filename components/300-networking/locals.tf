@@ -20,6 +20,7 @@ locals {
       }
       subnets = {
         private_mgmt = "10.16.10.0/24"
+        private_web  = "10.16.20.0/24"
         public_web   = "10.16.100.0/24"
       }
     }

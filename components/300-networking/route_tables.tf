@@ -27,6 +27,15 @@ resource "oci_core_route_table" "public_web" {
   freeform_tags = local.tags.defaults
 }
 
+resource "oci_core_route_table" "private_web" {
+  compartment_id = local.values.compartments.production
+  vcn_id         = oci_core_vcn.web.id
+
+  display_name = "route-table-private-web"
+
+  freeform_tags = local.tags.defaults
+}
+
 resource "oci_core_route_table" "private_mgmt" {
   compartment_id = local.values.compartments.production
   vcn_id         = oci_core_vcn.web.id
@@ -71,4 +80,9 @@ resource "oci_core_route_table_attachment" "public_web" {
 resource "oci_core_route_table_attachment" "private_mgmt" {
   subnet_id      = oci_core_subnet.private_mgmt.id
   route_table_id = oci_core_route_table.private_mgmt.id
+}
+
+resource "oci_core_route_table_attachment" "private_web" {
+  subnet_id      = oci_core_subnet.private_web.id
+  route_table_id = oci_core_route_table.private_web.id
 }
