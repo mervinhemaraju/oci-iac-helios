@@ -18,7 +18,7 @@ resource "oci_core_instance" "web_01" {
   }
 
   create_vnic_details {
-    subnet_id              = data.oci_core_subnets.public_web.subnets[0].id
+    subnet_id              = data.oci_core_subnets.private_web.subnets[0].id
     assign_public_ip       = false
     private_ip             = local.networking.ip_address.web_01
     skip_source_dest_check = true
@@ -46,7 +46,6 @@ resource "oci_core_instance" "web_01" {
   metadata = {
     ssh_authorized_keys = data.doppler_secrets.prod_main.map.OCI_GAIA_COMPUTE_KEY_PUBLIC
   }
-
 }
 
 # Create a compute instance for web_02
@@ -67,7 +66,7 @@ resource "oci_core_instance" "web_02" {
   }
 
   create_vnic_details {
-    subnet_id              = data.oci_core_subnets.public_web.subnets[0].id
+    subnet_id              = data.oci_core_subnets.private_web.subnets[0].id
     assign_public_ip       = false
     private_ip             = local.networking.ip_address.web_02
     skip_source_dest_check = true
@@ -95,5 +94,5 @@ resource "oci_core_instance" "web_02" {
   metadata = {
     ssh_authorized_keys = data.doppler_secrets.prod_main.map.OCI_GAIA_COMPUTE_KEY_PUBLIC
   }
-
 }
+
