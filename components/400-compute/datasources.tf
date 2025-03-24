@@ -24,13 +24,3 @@ data "oci_core_subnets" "private_mgmt" {
   display_name   = "private-mgmt"
   vcn_id         = data.oci_core_vcns.web.virtual_networks[0].id
 }
-
-data "oci_core_private_ips" "web_01" {
-  ip_address = local.networking.ip_address.web_01
-  subnet_id  = data.oci_core_subnets.private_web.subnets[0].id
-}
-
-data "oci_core_private_ips" "web_02" {
-  ip_address = local.networking.ip_address.web_02
-  subnet_id  = data.oci_core_subnets.private_web.subnets[0].id
-}

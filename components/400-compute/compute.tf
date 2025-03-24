@@ -95,4 +95,3 @@ resource "oci_core_instance" "web_02" {
     ssh_authorized_keys = data.doppler_secrets.prod_main.map.OCI_GAIA_COMPUTE_KEY_PUBLIC
   }
 }
-

@@ -46,7 +46,7 @@ locals {
 
       shape = "VM.Standard.A1.Flex"
       # image = "ocid1.image.oc1.af-johannesburg-1.aaaaaaaa7xvogbygpoelc6373sg547342qojimntnk4dvemmekilet66nppq"
-      image = "ocid1.image.oc1.af-johannesburg-1.aaaaaaaa4sk2wjvhgjebne5wpsgyxalurziu2y3ute4yfnxu4fijin2drxua"
+      image = "ocid1.image.oc1.af-johannesburg-1.aaaaaaaadpxuxt4xtk4lagfqlaedax5g2wnqkgcf6xchgbnrikup54ijyrya"
 
       plugins_config = [
         {
