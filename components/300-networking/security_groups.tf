@@ -52,6 +52,17 @@ resource "oci_core_security_list" "private_web" {
     description = "Allow all traffic from the private-mgmt subnet."
   }
 
+  ingress_security_rules {
+
+    # Allows all traffic from the public web subnet
+
+    source      = local.networking.cidr.subnets.public_web
+    source_type = "CIDR_BLOCK"
+    protocol    = "all"
+
+    description = "Allow all traffic from the public-web subnet."
+  }
+
   egress_security_rules {
 
     # Allows all traffic on egress
