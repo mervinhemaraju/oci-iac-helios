@@ -5,24 +5,10 @@ resource "oci_core_security_list" "private_mgmt" {
 
   display_name = "private-mgmt-sl"
 
-  egress_security_rules {
-
-    destination      = local.networking.cidr.vcn.web
-    destination_type = "CIDR_BLOCK"
-    protocol         = 6 # TCP
-
-    tcp_options {
-      min = 22
-      max = 22
-    }
-
-    description = "Allow SSH traffic to the web vcn CIDR."
-
-  }
-
   ingress_security_rules {
+    # Allows SSH traffic from the internet
 
-    source      = "0.0.0.0/0"
+    source      = local.networking.cidr.vcn.web
     source_type = "CIDR_BLOCK"
     protocol    = 6 # TCP
 
@@ -31,7 +17,17 @@ resource "oci_core_security_list" "private_mgmt" {
       max = 22
     }
 
-    description = "Allow SSH traffic from the Internet to the private mgmt subnet."
+    description = "Allow SSH traffic from the internet to the web VCN CIDR."
+  }
+
+  egress_security_rules {
+
+    destination      = local.networking.cidr.subnets.private_web
+    destination_type = "CIDR_BLOCK"
+    protocol         = "all"
+
+    description = "Allows all outbound traffic to the private-web subnet."
+
   }
 
   freeform_tags = local.tags.defaults
@@ -44,33 +40,27 @@ resource "oci_core_security_list" "private_web" {
 
   display_name = "private-web-sl"
 
-  egress_security_rules {
-
-    destination      = local.networking.cidr.vcn.web
-    destination_type = "CIDR_BLOCK"
-    protocol         = 6 # TCP
-
-    tcp_options {
-      min = 22
-      max = 22
-    }
-
-    description = "Allow SSH traffic to the web vcn CIDR."
-
-  }
 
   ingress_security_rules {
 
-    source      = "0.0.0.0/0"
+    # Allows all traffic from the private mgmt subnet
+
+    source      = local.networking.cidr.subnets.private_mgmt
     source_type = "CIDR_BLOCK"
-    protocol    = 6 # TCP
+    protocol    = "all"
 
-    tcp_options {
-      min = 22
-      max = 22
-    }
+    description = "Allow all traffic from the private-mgmt subnet."
+  }
 
-    description = "Allow SSH traffic from the Internet to the private mgmt subnet."
+  egress_security_rules {
+
+    # Allows all traffic on egress
+    destination      = "0.0.0.0/0"
+    destination_type = "CIDR_BLOCK"
+    protocol         = "all"
+
+    description = "Allow all outbound traffic to the internet."
+
   }
 
   freeform_tags = local.tags.defaults
