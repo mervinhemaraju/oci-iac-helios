@@ -6,6 +6,7 @@ resource "oci_core_route_table" "public_web" {
 
   display_name = "route-table-public-web"
 
+  # Route to the Internet gateway
   route_rules {
 
     network_entity_id = oci_core_internet_gateway.web.id
@@ -33,6 +34,16 @@ resource "oci_core_route_table" "private_web" {
 
   display_name = "route-table-private-web"
 
+  # Route to the NAT gateway
+  route_rules {
+
+    network_entity_id = oci_core_nat_gateway.web.id
+
+    description      = "Route to the NAT Gateway (Outbound Internet Access)"
+    destination      = "0.0.0.0/0"
+    destination_type = "CIDR_BLOCK"
+  }
+
   freeform_tags = local.tags.defaults
 }
 
@@ -40,7 +51,7 @@ resource "oci_core_route_table" "private_mgmt" {
   compartment_id = local.values.compartments.production
   vcn_id         = oci_core_vcn.web.id
 
-  display_name = "route-table-private-mgmt-01"
+  display_name = "route-table-private-mgmt"
 
 
   dynamic "route_rules" {

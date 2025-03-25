@@ -13,6 +13,10 @@ locals {
   }
 
   networking = {
+    ip_address = {
+      web_01 = "10.16.20.10"
+      web_02 = "10.16.20.20"
+    }
 
     cidr = {
       vcn = {
