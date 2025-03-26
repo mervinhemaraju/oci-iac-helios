@@ -32,26 +32,6 @@ resource "oci_load_balancer_backend_set" "web_http" {
   name             = "web_http_backends"
   policy           = "WEIGHTED_ROUND_ROBIN"
 
-  backend {
-    name       = "web_01"
-    ip_address = local.networking.ip_address.web_01
-    backup     = false
-    offline    = false
-    drain      = false
-    weight     = 1
-    port       = 80
-  }
-
-  backend {
-    name       = "web_02"
-    ip_address = local.networking.ip_address.web_02
-    backup     = false
-    offline    = false
-    drain      = false
-    weight     = 1
-    port       = 80
-  }
-
   health_checker {
     protocol = "HTTP"
 
