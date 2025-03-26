@@ -25,34 +25,7 @@ resource "oci_load_balancer_load_balancer" "web" {
   freeform_tags = local.tags.defaults
 }
 
-# Listeners
-resource "oci_load_balancer_listener" "web_http" {
-  #Required
-  default_backend_set_name = oci_load_balancer_backend_set.web_http.name
-  load_balancer_id         = oci_load_balancer_load_balancer.web.id
-  name                     = "web_http_listeners"
-  port                     = 80
-  protocol                 = "HTTP"
-
-  # hostname_names = [oci_load_balancer_hostname.test_hostname.name]
-  # path_route_set_name = oci_load_balancer_path_route_set.test_path_route_set.name
-  # routing_policy_name = oci_load_balancer_load_balancer_routing_policy.test_load_balancer_routing_policy.name
-  # rule_set_names = [oci_load_balancer_rule_set.test_rule_set.name]
-
-}
-
-# Backends    # ssl_configuration {
-#     #Optional
-#     certificate_name = oci_load_balancer_certificate.test_certificate.name
-#     has_session_resumption = var.listener_ssl_configuration_has_session_resumption
-#     certificate_ids = var.listener_ssl_configuration_certificate_ids
-#     cipher_suite_name = var.listener_ssl_configuration_cipher_suite_name
-#     protocols = var.listener_ssl_configuration_protocols
-#     server_order_preference = var.listener_ssl_configuration_server_order_preference
-#     trusted_certificate_authority_ids = var.listener_ssl_configuration_trusted_certificate_authority_ids
-#     verify_depth = var.listener_ssl_configuration_verify_depth
-#     verify_peer_certificate = var.listener_ssl_configuration_verify_peer_certificate
-# }
+# Backend Set
 resource "oci_load_balancer_backend_set" "web_http" {
 
   load_balancer_id = oci_load_balancer_load_balancer.web.id
@@ -125,4 +98,61 @@ resource "oci_load_balancer_backend_set" "web_http" {
   #     verify_depth = var.backend_set_ssl_configuration_verify_depth
   #     verify_peer_certificate = var.backend_set_ssl_configuration_verify_peer_certificate
   # }
+
+  depends_on = [
+    oci_load_balancer_load_balancer.web
+  ]
+}
+
+# Listeners
+resource "oci_load_balancer_listener" "web_http" {
+  #Required
+  default_backend_set_name = oci_load_balancer_backend_set.web_http.name
+  load_balancer_id         = oci_load_balancer_load_balancer.web.id
+  name                     = "web_http_listeners"
+  port                     = 80
+  protocol                 = "HTTP"
+
+  # hostname_names = [oci_load_balancer_hostname.test_hostname.name]
+  # path_route_set_name = oci_load_balancer_path_route_set.test_path_route_set.name
+  # routing_policy_name = oci_load_balancer_load_balancer_routing_policy.test_load_balancer_routing_policy.name
+  # rule_set_names = [oci_load_balancer_rule_set.test_rule_set.name]
+
+  depends_on = [
+    oci_load_balancer_load_balancer.web,
+    oci_load_balancer_backend_set.web_http,
+  ]
+}
+
+# Backends
+resource "oci_load_balancer_backend" "web_01" {
+  backendset_name  = oci_load_balancer_backend_set.web_http.name
+  ip_address       = local.networking.ip_address.web_01
+  load_balancer_id = oci_load_balancer_load_balancer.web.id
+  port             = 80
+  backup           = false
+  drain            = false
+  offline          = false
+  weight           = 1
+
+  depends_on = [
+    oci_load_balancer_load_balancer.web,
+    oci_load_balancer_backend_set.web_http,
+  ]
+}
+
+resource "oci_load_balancer_backend" "web_02" {
+  backendset_name  = oci_load_balancer_backend_set.web_http.name
+  ip_address       = local.networking.ip_address.web_02
+  load_balancer_id = oci_load_balancer_load_balancer.web.id
+  port             = 80
+  backup           = false
+  drain            = false
+  offline          = false
+  weight           = 1
+
+  depends_on = [
+    oci_load_balancer_load_balancer.web,
+    oci_load_balancer_backend_set.web_http,
+  ]
 }
