@@ -1,7 +1,7 @@
 resource "oci_objectstorage_bucket" "root_ca_mervinhemaraju" {
   compartment_id = local.values.compartments.production
   name           = "ca-root-mervinhemaraju"
-  namespace      = "ca-root-mervinhemaraju"
+  namespace      = data.oci_objectstorage_namespace.this.namespace
 
   storage_tier = "Standard"
   access_type  = "NoPublicAccess"
