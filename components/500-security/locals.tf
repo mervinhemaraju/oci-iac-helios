@@ -11,4 +11,11 @@ locals {
       "Component"   = "500-security"
     }
   }
+
+  values = {
+    compartments = {
+      production = data.doppler_secrets.prod_main.map.OCI_HELIOS_COMPARTMENT_PRODUCTION_ID
+      root       = data.doppler_secrets.prod_main.map.OCI_HELIOS_COMPARTMENT_ROOT_ID
+    }
+  }
 }
