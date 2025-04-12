@@ -1,7 +1,7 @@
 resource "oci_certificates_management_certificate_authority" "mervinhemaraju_root" {
   compartment_id = local.values.compartments.production
   kms_key_id     = oci_kms_key.mervinhemaraju_root_ca.id
-  name           = "mervinhemaraju-ca-root"
+  name           = "ca-root-mervinhemaraju"
   description    = "Root CA for Mervin Hemaraju"
 
   certificate_authority_config {
@@ -10,7 +10,7 @@ resource "oci_certificates_management_certificate_authority" "mervinhemaraju_roo
     subject {
 
       #Optional
-      common_name = "mervinhemaraju-ca-root"
+      common_name = "ca-root-mervinhemaraju"
       # country = var.certificate_authority_certificate_authority_config_subject_country
       # distinguished_name_qualifier = var.certificate_authority_certificate_authority_config_subject_distinguished_name_qualifier
       # domain_component = var.certificate_authority_certificate_authority_config_subject_domain_component

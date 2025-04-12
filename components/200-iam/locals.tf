@@ -17,5 +17,10 @@ locals {
       production = data.doppler_secrets.prod_main.map.OCI_HELIOS_COMPARTMENT_PRODUCTION_ID
       root       = data.doppler_secrets.prod_main.map.OCI_HELIOS_COMPARTMENT_ROOT_ID
     }
+
+    groups = {
+      ca_dg          = "certificate-authorities-dg"
+      administrators = "Administrators"
+    }
   }
 }
