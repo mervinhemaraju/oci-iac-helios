@@ -1,7 +1,7 @@
 
 resource "oci_identity_dynamic_group" "ca" {
   compartment_id = local.values.compartments.root
-  name           = local.values.group.ca_dg
+  name           = local.values.groups.ca_dg
 
   description   = "Dynamic group for Certificate Authorities"
   matching_rule = "resource.type='certificateauthority'"

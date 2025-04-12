@@ -4,7 +4,7 @@ resource "oci_identity_policy" "buckets_administrators" {
   description    = "Allow the Administrators to manage buckets in this tenancy"
   name           = "buckets-administrators"
   statements = [
-    "Allow group ${local.values.group.administrators} to manage buckets in tenancy"
+    "Allow group ${local.values.groups.administrators} to manage buckets in tenancy"
   ]
 
   freeform_tags = local.tags.defaults
