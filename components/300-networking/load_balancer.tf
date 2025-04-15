@@ -30,19 +30,19 @@ resource "oci_load_balancer_backend_set" "web_http" {
 
   load_balancer_id = oci_load_balancer_load_balancer.web.id
   name             = "web_http_backends"
-  policy           = "WEIGHTED_ROUND_ROBIN"
+  policy           = "ROUND_ROBIN"
 
   health_checker {
     protocol = "HTTP"
 
-    # interval_ms         = var.backend_set_health_checker_interval_ms
+    interval_ms = "50000"
     # is_force_plain_text = var.backend_set_health_checker_is_force_plain_text
     port = 80
     # response_body_regex = var.backend_set_health_checker_response_body_regex
     retries     = 3
     return_code = 200
     # timeout_in_millis   = var.backend_set_health_checker_timeout_in_millis
-    url_path = "/"
+    url_path = "/health"
   }
 
 
