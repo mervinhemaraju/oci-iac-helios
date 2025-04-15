@@ -117,11 +117,11 @@ resource "oci_load_balancer_listener" "web_https" {
     # has_session_resumption = var.listener_ssl_configuration_has_session_resumption
     certificate_name = data.oci_load_balancer_certificates.web_certificates.certificates[0].certificate_name
     # cipher_suite_name = var.listener_ssl_configuration_cipher_suite_name
-    protocols = ["TLSv1.2", "TLSv1.3"]
-    # server_order_preference = var.listener_ssl_configuration_server_order_preference
+    protocols               = ["TLSv1.2", "TLSv1.3"]
+    server_order_preference = "DISABLED"
     # trusted_certificate_authority_ids = var.listener_ssl_configuration_trusted_certificate_authority_ids
     # verify_depth = var.listener_ssl_configuration_verify_depth
-    # verify_peer_certificate = var.listener_ssl_configuration_verify_peer_certificate
+    verify_peer_certificate = false
   }
 
   depends_on = [
