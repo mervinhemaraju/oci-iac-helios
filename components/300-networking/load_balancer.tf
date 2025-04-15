@@ -115,7 +115,7 @@ resource "oci_load_balancer_listener" "web_https" {
 
   ssl_configuration {
     # has_session_resumption = var.listener_ssl_configuration_has_session_resumption
-    certificate_ids = data.oci_load_balancer_certificates.web_certificates[0].id
+    certificate_name = data.oci_load_balancer_certificates.web_certificates.certificates[0].certificate_name
     # cipher_suite_name = var.listener_ssl_configuration_cipher_suite_name
     protocols = ["TLSv1.2", "TLSv1.3"]
     # server_order_preference = var.listener_ssl_configuration_server_order_preference
