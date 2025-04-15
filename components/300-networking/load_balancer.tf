@@ -106,7 +106,7 @@ resource "oci_load_balancer_listener" "web_https" {
   load_balancer_id         = oci_load_balancer_load_balancer.web.id
   name                     = "web_https_listeners"
   port                     = 443
-  protocol                 = "HTTPS"
+  protocol                 = "HTTP"
 
   # hostname_names = [oci_load_balancer_hostname.test_hostname.name]
   # path_route_set_name = oci_load_balancer_path_route_set.test_path_route_set.name
