@@ -1,3 +1,5 @@
+# TODO(Fix tflint precommit to scan each tf directories)
+
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v3.2.0
