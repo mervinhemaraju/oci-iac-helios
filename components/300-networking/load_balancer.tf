@@ -93,10 +93,36 @@ resource "oci_load_balancer_listener" "web_http" {
   port                     = 80
   protocol                 = "HTTP"
 
+  depends_on = [
+    oci_load_balancer_load_balancer.web,
+    oci_load_balancer_backend_set.web_http,
+  ]
+}
+
+# Listeners
+resource "oci_load_balancer_listener" "web_https" {
+  #Required
+  default_backend_set_name = oci_load_balancer_backend_set.web_http.name
+  load_balancer_id         = oci_load_balancer_load_balancer.web.id
+  name                     = "web_https_listeners"
+  port                     = 443
+  protocol                 = "HTTPS"
+
   # hostname_names = [oci_load_balancer_hostname.test_hostname.name]
   # path_route_set_name = oci_load_balancer_path_route_set.test_path_route_set.name
   # routing_policy_name = oci_load_balancer_load_balancer_routing_policy.test_load_balancer_routing_policy.name
   # rule_set_names = [oci_load_balancer_rule_set.test_rule_set.name]
+
+  ssl_configuration {
+    # has_session_resumption = var.listener_ssl_configuration_has_session_resumption
+    certificate_ids = data.oci_load_balancer_certificate.oci_load_balancer_certificates.id
+    # cipher_suite_name = var.listener_ssl_configuration_cipher_suite_name
+    protocols = ["TLSv1.2", "TLSv1.3"]
+    # server_order_preference = var.listener_ssl_configuration_server_order_preference
+    # trusted_certificate_authority_ids = var.listener_ssl_configuration_trusted_certificate_authority_ids
+    # verify_depth = var.listener_ssl_configuration_verify_depth
+    # verify_peer_certificate = var.listener_ssl_configuration_verify_peer_certificate
+  }
 
   depends_on = [
     oci_load_balancer_load_balancer.web,

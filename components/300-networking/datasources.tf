@@ -25,3 +25,8 @@ data "oci_core_private_ips" "web_02" {
     oci_core_subnet.public_web
   ]
 }
+
+# Get the available LB certificates
+data "oci_load_balancer_certificates" "web_certificates" {
+  load_balancer_id = oci_load_balancer_load_balancer.web.id
+}
