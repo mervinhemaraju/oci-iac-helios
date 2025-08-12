@@ -120,7 +120,7 @@ resource "oci_load_balancer_listener" "web_https" {
     protocols               = ["TLSv1.2", "TLSv1.3"]
     server_order_preference = "DISABLED"
     # trusted_certificate_authority_ids = var.listener_ssl_configuration_trusted_certificate_authority_ids
-    # verify_depth = var.listener_ssl_configuration_verify_depth
+    verify_depth            = 1
     verify_peer_certificate = false
   }
 

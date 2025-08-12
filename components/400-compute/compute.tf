@@ -44,7 +44,7 @@ resource "oci_core_instance" "web_01" {
   freeform_tags = local.tags.defaults
 
   metadata = {
-    ssh_authorized_keys = data.doppler_secrets.oci_creds.map.OCI_GAIA_COMPUTE_KEY_PUBLIC
+    ssh_authorized_keys = data.doppler_secrets.oci_creds.map.OCI_COMPUTE_KEY_PUBLIC
 
     # User data from YAML template file
     user_data = base64encode(templatefile("${path.module}/templates/cloud_init.yml", {
