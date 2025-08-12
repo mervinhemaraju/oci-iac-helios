@@ -1,5 +1,12 @@
 # Define our data source to fetch secrets
-data "doppler_secrets" "prod_main" {}
+data "doppler_secrets" "oci_creds" {
+  project = "cloud-oci-creds"
+}
+
+# Define our data source to fetch secrets
+data "doppler_secrets" "apps_creds" {
+  project = "apps-creds"
+}
 
 # Gets the availability domain from OCI
 data "oci_identity_availability_domain" "this" {

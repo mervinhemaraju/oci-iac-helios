@@ -44,7 +44,7 @@ resource "oci_core_instance" "mongo" {
   freeform_tags = local.tags.defaults
 
   metadata = {
-    ssh_authorized_keys = data.doppler_secrets.prod_main.map.OCI_GAIA_COMPUTE_KEY_PUBLIC
+    ssh_authorized_keys = data.doppler_secrets.oci_creds.map.OCI_GAIA_COMPUTE_KEY_PUBLIC
   }
 
 }

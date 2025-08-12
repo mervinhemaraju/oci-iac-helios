@@ -1,5 +1,7 @@
 # Define our data source to fetch secrets
-data "doppler_secrets" "prod_main" {}
+data "doppler_secrets" "oci_creds" {
+  project = "cloud-oci-creds"
+}
 
 # Get the main admin user
 data "oci_identity_users" "main_admin" {
