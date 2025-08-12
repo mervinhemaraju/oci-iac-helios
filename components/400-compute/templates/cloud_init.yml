@@ -53,8 +53,8 @@ write_files:
   # Create a custom nginx configuration
   - path: /tmp/nginx.conf.custom
     permissions: "0644"
-    content: |
-      ${nginx_config}
+    encoding: b64
+    content: ${nginx_config_b64}
 
 runcmd:
   # Disable the firewalld

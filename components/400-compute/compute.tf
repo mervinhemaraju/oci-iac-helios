@@ -51,7 +51,7 @@ resource "oci_core_instance" "web_01" {
       hostname             = local.values.compute.name.web_01
       authorized_ssh_key   = data.doppler_secrets.oci_creds.map.OCI_COMPUTE_KEY_PUBLIC
       cloudflare_api_token = data.doppler_secrets.apps_creds.map.CLOUDFLARE_TERRAFORM_TOKEN
-      nginx_config         = file("${path.module}/templates/nginx.conf")
+      nginx_config_b64     = filebase64("${path.module}/templates/nginx.conf")
     }))
   }
 }
@@ -108,7 +108,7 @@ resource "oci_core_instance" "web_02" {
       hostname             = local.values.compute.name.web_02
       authorized_ssh_key   = data.doppler_secrets.oci_creds.map.OCI_COMPUTE_KEY_PUBLIC
       cloudflare_api_token = data.doppler_secrets.apps_creds.map.CLOUDFLARE_TERRAFORM_TOKEN
-      nginx_config         = file("${path.module}/templates/nginx.conf")
+      nginx_config_b64     = filebase64("${path.module}/templates/nginx.conf")
     }))
   }
 }
