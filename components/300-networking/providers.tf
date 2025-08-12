@@ -8,8 +8,8 @@ provider "doppler" {
 provider "oci" {
   tenancy_ocid = data.doppler_secrets.oci_creds.map.OCI_HELIOS_TENANCY_OCID
   user_ocid    = data.doppler_secrets.oci_creds.map.OCI_HELIOS_USER_OCID
-  fingerprint  = data.doppler_secrets.oci_creds.map.OCI_HELIOS_FINGERPRINT
-  private_key  = data.doppler_secrets.oci_creds.map.OCI_HELIOS_PRIVATE_KEY
+  fingerprint  = data.doppler_secrets.oci_creds.map.OCI_API_FINGERPRINT
+  private_key  = data.doppler_secrets.oci_creds.map.OCI_API_KEY_PRIVATE
   region       = var.region
 }
 
