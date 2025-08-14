@@ -34,6 +34,15 @@ packages:
   - oci-utils
 
 write_files:
+  # Set up environment variables
+  - path: /etc/environment
+    content: |
+      GITHUB_PAT=${github_pat}
+      GITHUB_ORG=plagueworks-org
+      GITHUB_PERSONAL=mervinhemaraju
+    append: true
+    permissions: "0644"
+
   # Create the directory for Cloudflare credentials
   - path: /home/th3pl4gu3/cloudflare/cloudflare.ini
     permissions: "0600"
@@ -85,9 +94,11 @@ runcmd:
   - systemctl start docker
   - systemctl enable docker
 
-  # Add opc and th3pl4gu3 user to docker group (if not already done)
+  # Add opc and th3pl4gu3 user to required groups (if not already done)
   - usermod -aG docker opc
   - usermod -aG docker th3pl4gu3
+  - usermod -aG nginx opc
+  - usermod -aG nginx th3pl4gu3
 
   # Install Certbot
   - snap install --classic certbot
@@ -99,11 +110,14 @@ runcmd:
   - snap connect certbot:plugin certbot-dns-cloudflare
 
   # Set folder owners
+  - chown -R th3pl4gu3:th3pl4gu3 /home/th3pl4gu3
   - chown -R th3pl4gu3:th3pl4gu3 /home/th3pl4gu3/cloudflare
 
   # Create required nginx directories
-  - mkdir -p /etc/nginx/sites-available
   - mkdir -p /etc/nginx/sites-enabled
+
+  # Set permissions for nginx directories
+  - chmod 755 /etc/nginx/sites-enabled
 
   # Backup original nginx.conf and replace with custom one
   - mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.back || true
