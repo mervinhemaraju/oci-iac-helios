@@ -50,6 +50,7 @@ resource "oci_core_instance" "web_01" {
     user_data = base64encode(templatefile("${path.module}/templates/cloud_init.yml", {
       hostname             = local.values.compute.name.web_01
       authorized_ssh_key   = data.doppler_secrets.oci_creds.map.OCI_COMPUTE_KEY_PUBLIC
+      github_pat           = data.doppler_secrets.apps_creds.map.GH_TERRAFORM_TOKEN
       cloudflare_api_token = data.doppler_secrets.apps_creds.map.CLOUDFLARE_TERRAFORM_TOKEN
       nginx_config_b64     = filebase64("${path.module}/templates/nginx.conf")
     }))
