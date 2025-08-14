@@ -125,6 +125,9 @@ runcmd:
   - chown root:root /etc/nginx/nginx.conf
   - chmod 644 /etc/nginx/nginx.conf
 
+  # Configure SELinux for nginx reverse proxy functionality
+  - setsebool -P httpd_can_network_connect 1
+
   # Fix SELinux context for nginx.conf
   - restorecon -v /etc/nginx/nginx.conf
 
