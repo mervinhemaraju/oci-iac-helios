@@ -12,10 +12,15 @@ locals {
     }
   }
 
-  networking = {
-    ip_address = {
-      web_01 = "10.16.20.10"
-      web_02 = "10.16.20.20"
+
+  web_instances = {
+    web_01 = {
+      name       = "web-01"
+      private_ip = "10.16.20.10"
+    }
+    web_02 = {
+      name       = "web-02"
+      private_ip = "10.16.20.20"
     }
   }
 
@@ -39,14 +44,8 @@ locals {
 
     compute = {
 
-      name = {
-        web_01 = "web-01"
-        web_02 = "web-02"
-      }
-
       shape = "VM.Standard.A1.Flex"
-      # image = "ocid1.image.oc1.af-johannesburg-1.aaaaaaaa7xvogbygpoelc6373sg547342qojimntnk4dvemmekilet66nppq"
-      image = "ocid1.image.oc1.af-johannesburg-1.aaaaaaaadpxuxt4xtk4lagfqlaedax5g2wnqkgcf6xchgbnrikup54ijyrya"
+      image = "ocid1.image.oc1.af-johannesburg-1.aaaaaaaay7ecmckrzccnvnjwrdsrfrd4matlaqwcpamiewmhtnqxl4d244ka"
 
       plugins_config = [
         {
