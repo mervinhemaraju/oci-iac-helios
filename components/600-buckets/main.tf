@@ -1,6 +1,6 @@
-resource "oci_objectstorage_bucket" "root_ca_mervinhemaraju" {
+resource "oci_objectstorage_bucket" "certificates" {
   compartment_id = local.values.compartments.production
-  name           = "ca-root-mervinhemaraju"
+  name           = "certificates"
   namespace      = data.oci_objectstorage_namespace.this.namespace
 
   storage_tier = "Standard"
