@@ -132,7 +132,7 @@ resource "oci_load_balancer_listener" "web_https" {
   lifecycle {
     # Prevent changes to the certificate name after creation
     # Since this will be managed manually for renewals.
-    ignore_changes = [certificate_name]
+    ignore_changes = [ssl_configuration[0].certificate_name]
   }
 }
 
