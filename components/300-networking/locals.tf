@@ -23,11 +23,16 @@ locals {
         web = "10.16.0.0/16"
       }
       subnets = {
-        private_mgmt = "10.16.10.0/24"
-        private_web  = "10.16.20.0/24"
-        public_web   = "10.16.100.0/24"
+        private_mgmt          = "10.16.10.0/24"
+        private_web           = "10.16.20.0/24"
+        public_web            = "10.16.100.0/24"
+        private_database_gaia = "10.18.20.0/24" # (This is found in the GAIA account)
       }
     }
+  }
+
+  gaia_account = {
+    database_drg = jsondecode(data.doppler_secrets.oci_creds.map.OCI_GAIA_DRG_DATABASE)
   }
 
   values = {
