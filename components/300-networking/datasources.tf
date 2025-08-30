@@ -9,24 +9,24 @@ data "oci_identity_availability_domain" "this" {
   ad_number      = 1
 }
 
-# Get ths private ips for web computes
-data "oci_core_private_ips" "web_01" {
-  ip_address = local.networking.ip_address.web_01
-  subnet_id  = oci_core_subnet.public_web.id
+# # Get ths private ips for web computes
+# data "oci_core_private_ips" "web_01" {
+#   ip_address = local.networking.ip_address.web_01
+#   subnet_id  = oci_core_subnet.public_web.id
 
-  depends_on = [
-    oci_core_subnet.public_web
-  ]
-}
+#   depends_on = [
+#     oci_core_subnet.public_web
+#   ]
+# }
 
-data "oci_core_private_ips" "web_02" {
-  ip_address = local.networking.ip_address.web_02
-  subnet_id  = oci_core_subnet.public_web.id
+# data "oci_core_private_ips" "web_02" {
+#   ip_address = local.networking.ip_address.web_02
+#   subnet_id  = oci_core_subnet.public_web.id
 
-  depends_on = [
-    oci_core_subnet.public_web
-  ]
-}
+#   depends_on = [
+#     oci_core_subnet.public_web
+#   ]
+# }
 
 # Get the available LB certificates
 data "oci_load_balancer_certificates" "web_certificates" {
