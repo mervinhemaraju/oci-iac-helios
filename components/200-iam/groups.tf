@@ -2,7 +2,7 @@
 resource "oci_identity_group" "vcn_admins" {
 
   compartment_id = local.values.compartments.root
-  name           = "vcn-admins"
+  name           = local.values.groups.vcn_admins
   description    = "VCN Admininistrators group."
 
   freeform_tags = local.tags.defaults

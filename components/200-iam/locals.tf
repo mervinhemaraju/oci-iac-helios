@@ -24,6 +24,7 @@ locals {
 
     groups = {
       ca_dg          = "certificate-authorities-dg"
+      vcn_admins     = "vcn-admins"
       administrators = "Administrators"
     }
   }
