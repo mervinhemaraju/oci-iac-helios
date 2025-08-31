@@ -12,7 +12,16 @@ locals {
     }
   }
 
+  secrets = {
+    oci = "cloud-oci-creds"
+  }
+
   networking = {
+
+    gateways = {
+      gaia_database_drg = jsondecode(data.doppler_secrets.oci_creds.map.OCI_GAIA_CONNECTIONS)["drg"]["id"]
+    }
+
     ip_address = {
       web_01 = "10.16.20.10"
       web_02 = "10.16.20.20"
@@ -29,10 +38,6 @@ locals {
         private_database_gaia = "10.18.20.0/24" # (This is found in the GAIA account)
       }
     }
-  }
-
-  gaia_account = {
-    database_drg = jsondecode(data.doppler_secrets.oci_creds.map.OCI_GAIA_DRG_DATABASE)
   }
 
   values = {

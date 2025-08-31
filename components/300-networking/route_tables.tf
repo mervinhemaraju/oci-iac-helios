@@ -38,7 +38,7 @@ resource "oci_core_route_table" "private_web" {
   # Route to the DRG database gateway in GAIA for cross connection
   route_rules {
 
-    network_entity_id = local.gaia_account.database_drg["id"]
+    network_entity_id = local.networking.gateways.gaia_database_drg
 
     description      = "Route to the GAIA Database account tenant's VCN (VCN Peering to GAIA Account)"
     destination      = local.networking.cidr.subnets.private_database_gaia
@@ -52,33 +52,7 @@ resource "oci_core_route_table" "private_mgmt" {
   compartment_id = local.values.compartments.production
   vcn_id         = oci_core_vcn.web.id
 
-  display_name = "route-table-private-mgmt"
-
-
-  # dynamic "route_rules" {
-  #   for_each = data.oci_core_private_ips.web_01.private_ips
-  #   content {
-
-  #     network_entity_id = route_rules.value["id"]
-
-  #     description      = "Route to web compute 01"
-  #     destination      = format("%s/32", route_rules.value["ip_address"])
-  #     destination_type = "CIDR_BLOCK"
-  #   }
-  # }
-
-  # dynamic "route_rules" {
-  #   for_each = data.oci_core_private_ips.web_02.private_ips
-  #   content {
-
-  #     network_entity_id = route_rules.value["id"]
-
-  #     description      = "Route to web compute 02"
-  #     destination      = format("%s/32", route_rules.value["ip_address"])
-  #     destination_type = "CIDR_BLOCK"
-  #   }
-  # }
-
+  display_name  = "route-table-private-mgmt"
   freeform_tags = local.tags.defaults
 }
 
