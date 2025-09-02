@@ -48,10 +48,13 @@ resource "oci_core_instance" "web" {
 
     # User data from YAML template file
     user_data = base64encode(templatefile("${path.module}/templates/cloud_init.yml", {
-      hostname           = each.value.name
-      authorized_ssh_key = data.doppler_secrets.oci_creds.map.OCI_COMPUTE_KEY_PUBLIC
-      github_pat         = data.doppler_secrets.apps_creds.map.GH_TERRAFORM_TOKEN
-      nginx_config_b64   = filebase64("${path.module}/templates/nginx.conf")
+      hostname               = each.value.name
+      authorized_ssh_key     = data.doppler_secrets.oci_creds.map.OCI_COMPUTE_KEY_PUBLIC
+      github_pat             = data.doppler_secrets.apps_creds.map.GH_TERRAFORM_TOKEN
+      nginx_config_b64       = filebase64("${path.module}/templates/nginx.conf")
+      gaia_db_server         = local.web_instances.gaia_db_server.private_ip
+      postgres_user_password = data.doppler_secrets.oci_creds.map.OCI_POSEIDON_DATABASE_USER_PASSWORD
+      mariadb_root_password  = data.doppler_secrets.oci_creds.map.OCI_POSEIDON_DATABASE_USER_PASSWORD
     }))
   }
 }

@@ -33,6 +33,8 @@ packages:
   - python3-pip
   - oci-utils
   - python39-oci-cli
+  - postgresql
+  - mariadb
 
 write_files:
   # Set up environment variables
@@ -60,6 +62,35 @@ write_files:
     encoding: b64
     content: ${nginx_config_b64}
 
+  # Add database server mapping to hosts file
+  - path: /etc/hosts
+    append: true
+    content: |
+      # Database server
+      ${gaia_db_server}    gaia-db.local gaia-db
+
+  # MariaDB client config for th3pl4gu3 user
+  - path: /home/th3pl4gu3/.my.cnf
+    owner: th3pl4gu3:th3pl4gu3
+    permissions: "0600"
+    content: |
+      [client]
+      host=${gaia_db_server}
+      user=th3pl4gu3
+      password=${mariadb_root_password}
+
+      [mysql]
+      host=${gaia_db_server}
+      user=th3pl4gu3
+      password=${mariadb_root_password}
+
+  # PostgreSQL password file for th3pl4gu3
+  - path: /home/th3pl4gu3/.pgpass
+    owner: th3pl4gu3:th3pl4gu3
+    permissions: "0600"
+    content: |
+      ${gaia_db_server}:5432:*:th3pl4gu3:${postgres_user_password}
+
 runcmd:
   # Disable the firewalld
   - systemctl stop firewalld
@@ -67,21 +98,6 @@ runcmd:
 
   # Automatic growth of volume
   - /usr/libexec/oci-growfs -y
-
-  # Install the EPEL 9 Repository
-  # - dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm
-
-  # Install EPEL dependent packages
-  # - dnf install -y python39-oci-cli snapd
-
-  # Setup snapd properly
-  # - systemctl enable --now snapd.socket
-  # - systemctl start snapd.service
-  # - ln -s /var/lib/snapd/snap /snap || true
-
-  # Wait for snapd to be ready
-  # - sleep 10
-  # - snap wait system seed.loaded
 
   # Install Docker
   - dnf config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
@@ -94,15 +110,6 @@ runcmd:
   - usermod -aG docker th3pl4gu3
   - usermod -aG nginx opc
   - usermod -aG nginx th3pl4gu3
-
-  # Install Certbot
-  # - snap install --classic certbot
-  # - ln -s /snap/bin/certbot /usr/bin/certbot || true
-
-  # Install Clouflare DNS plugin
-  # - snap set certbot trust-plugin-with-root=ok
-  # - snap install certbot-dns-cloudflare
-  # - snap connect certbot:plugin certbot-dns-cloudflare
 
   # Set folder owners
   - chown -R th3pl4gu3:th3pl4gu3 /home/th3pl4gu3

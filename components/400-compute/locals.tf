@@ -22,6 +22,9 @@ locals {
       name       = "web-02"
       private_ip = "10.16.20.20"
     }
+    gaia_db_server = {
+      private_ip = "10.18.20.10"
+    }
   }
 
   values = {
