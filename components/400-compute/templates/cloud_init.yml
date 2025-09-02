@@ -71,7 +71,6 @@ write_files:
 
   # MariaDB client config for th3pl4gu3 user
   - path: /home/th3pl4gu3/.my.cnf
-    owner: th3pl4gu3:th3pl4gu3
     permissions: "0600"
     content: |
       [client]
@@ -86,7 +85,6 @@ write_files:
 
   # PostgreSQL password file for th3pl4gu3
   - path: /home/th3pl4gu3/.pgpass
-    owner: th3pl4gu3:th3pl4gu3
     permissions: "0600"
     content: |
       ${gaia_db_server}:5432:*:th3pl4gu3:${postgres_user_password}
@@ -98,6 +96,12 @@ runcmd:
 
   # Automatic growth of volume
   - /usr/libexec/oci-growfs -y
+
+  # Fix ownership of user files AFTER users are created
+  - chown th3pl4gu3:th3pl4gu3 /home/th3pl4gu3/.my.cnf
+  - chown th3pl4gu3:th3pl4gu3 /home/th3pl4gu3/.pgpass
+  - chmod 600 /home/th3pl4gu3/.my.cnf
+  - chmod 600 /home/th3pl4gu3/.pgpass
 
   # Install Docker
   - dnf config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
@@ -113,7 +117,6 @@ runcmd:
 
   # Set folder owners
   - chown -R th3pl4gu3:th3pl4gu3 /home/th3pl4gu3
-  # - chown -R th3pl4gu3:th3pl4gu3 /home/th3pl4gu3/cloudflare
 
   # Create required nginx directories
   - mkdir -p /etc/nginx/sites-enabled
