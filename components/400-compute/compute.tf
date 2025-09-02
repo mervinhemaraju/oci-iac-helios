@@ -52,7 +52,7 @@ resource "oci_core_instance" "web" {
       authorized_ssh_key     = data.doppler_secrets.oci_creds.map.OCI_COMPUTE_KEY_PUBLIC
       github_pat             = data.doppler_secrets.apps_creds.map.GH_TERRAFORM_TOKEN
       nginx_config_b64       = filebase64("${path.module}/templates/nginx.conf")
-      gaia_db_server         = local.web_instances.gaia_db_server.private_ip
+      gaia_db_server         = local.values.networking.gaia_db_server.private_ip
       postgres_user_password = data.doppler_secrets.oci_creds.map.OCI_POSEIDON_DATABASE_USER_PASSWORD
       mariadb_root_password  = data.doppler_secrets.oci_creds.map.OCI_POSEIDON_DATABASE_USER_PASSWORD
     }))
