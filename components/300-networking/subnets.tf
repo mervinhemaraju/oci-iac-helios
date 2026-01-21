@@ -1,55 +1,78 @@
 
 
-# Create a public subnet for the web resources
-resource "oci_core_subnet" "public_web" {
+# Create a public subnet for the kubernetes
+resource "oci_core_subnet" "public_k8" {
 
   compartment_id = local.values.compartments.production
 
-  cidr_block = local.networking.cidr.subnets.public_web
-  vcn_id     = oci_core_vcn.web.id
+  cidr_block = local.networking.cidr.subnets.public_k8
+  vcn_id     = oci_core_vcn.dev.id
 
-  display_name               = "public-web"
-  dns_label                  = "publicweb"
+  display_name               = "public-k8"
+  dns_label                  = "publick8"
   prohibit_public_ip_on_vnic = false
-  security_list_ids          = [oci_core_security_list.public_web.id]
+  security_list_ids          = [oci_core_security_list.public_k8.id]
+
+  route_table_id = oci_core_route_table.public_k8.id
 
   freeform_tags = local.tags.defaults
 
   depends_on = [
-    oci_core_vcn.web
+    oci_core_vcn.dev
   ]
 }
 
-
-# Create a private subnet for the web resources
-resource "oci_core_subnet" "private_web" {
+# Create a private subnet for the kubernetes api
+resource "oci_core_subnet" "private_k8_api" {
 
   compartment_id = local.values.compartments.production
 
-  cidr_block = local.networking.cidr.subnets.private_web
-  vcn_id     = oci_core_vcn.web.id
+  cidr_block = local.networking.cidr.subnets.private_k8_api
+  vcn_id     = oci_core_vcn.dev.id
 
-  display_name               = "private-web"
-  dns_label                  = "privateweb"
+  display_name               = "private-k8-api"
+  dns_label                  = "privatek8api"
   prohibit_public_ip_on_vnic = true
-  security_list_ids          = [oci_core_security_list.private_web.id]
+  security_list_ids          = [oci_core_security_list.private_k8.id]
 
-  route_table_id = oci_core_route_table.private_web.id
+  route_table_id = oci_core_route_table.private_k8.id
 
   freeform_tags = local.tags.defaults
 
   depends_on = [
-    oci_core_vcn.web
+    oci_core_vcn.dev
   ]
 }
 
-# Create a private subnet for the bastions
+# Create a private subnet for the kubernetes cluster
+resource "oci_core_subnet" "private_k8" {
+
+  compartment_id = local.values.compartments.production
+
+  cidr_block = local.networking.cidr.subnets.private_k8
+  vcn_id     = oci_core_vcn.dev.id
+
+  display_name               = "private-k8"
+  dns_label                  = "privatek8"
+  prohibit_public_ip_on_vnic = true
+  security_list_ids          = [oci_core_security_list.private_k8.id]
+
+  route_table_id = oci_core_route_table.private_k8.id
+
+  freeform_tags = local.tags.defaults
+
+  depends_on = [
+    oci_core_vcn.dev
+  ]
+}
+
+# Create a private subnet for the mgmt resources
 resource "oci_core_subnet" "private_mgmt" {
 
   compartment_id = local.values.compartments.production
 
   cidr_block = local.networking.cidr.subnets.private_mgmt
-  vcn_id     = oci_core_vcn.web.id
+  vcn_id     = oci_core_vcn.dev.id
 
   display_name               = "private-mgmt"
   dns_label                  = "privatemgmt"
@@ -61,6 +84,7 @@ resource "oci_core_subnet" "private_mgmt" {
   freeform_tags = local.tags.defaults
 
   depends_on = [
-    oci_core_vcn.web
+    oci_core_vcn.dev
   ]
 }
+

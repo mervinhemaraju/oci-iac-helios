@@ -1,13 +1,14 @@
 resource "oci_core_security_list" "private_mgmt" {
 
   compartment_id = local.values.compartments.production
-  vcn_id         = oci_core_vcn.web.id
+  vcn_id         = oci_core_vcn.dev.id
 
   display_name = "private-mgmt-sl"
 
-  # Allows SSH traffic from the internet
   ingress_security_rules {
-    source      = local.networking.cidr.vcn.web
+    # Allows SSH traffic from the internet
+
+    source      = "0.0.0.0/0"
     source_type = "CIDR_BLOCK"
     protocol    = 6 # TCP
 
@@ -16,59 +17,72 @@ resource "oci_core_security_list" "private_mgmt" {
       max = 22
     }
 
-    description = "Allow SSH traffic from the internet to the web VCN CIDR."
+    description = "Allow SSH traffic from the Internet."
   }
 
-  # Allows all traffic to the private-web vcn
   egress_security_rules {
-    destination      = local.networking.cidr.subnets.private_web
+
+    destination      = local.networking.cidr.vcn.dev
     destination_type = "CIDR_BLOCK"
     protocol         = "all"
 
-    description = "Allows all outbound traffic to the private-web subnet."
+    description = "Allows all outbound traffic to the VCN CIDR."
 
   }
 
   freeform_tags = local.tags.defaults
 }
 
-resource "oci_core_security_list" "private_web" {
+resource "oci_core_security_list" "private_k8" {
 
   compartment_id = local.values.compartments.production
-  vcn_id         = oci_core_vcn.web.id
+  vcn_id         = oci_core_vcn.dev.id
 
-  display_name = "private-web-sl"
+  display_name = "private-k8-sl"
 
-  # Allows all ingress traffic from the private db subnet in GAIA account
+
+
+  # Alows all ingress traffic from the VCN CIDR
+  ingress_security_rules {
+
+    source      = local.networking.cidr.vcn.dev
+    source_type = "CIDR_BLOCK"
+    protocol    = "all"
+
+    description = "Allow all traffic from the VCN CIDR"
+  }
+
+
+  # Allows all ingress traffic from the private db GAIA subnet
   ingress_security_rules {
     source      = local.networking.cidr.subnets.private_database_gaia
     source_type = "CIDR_BLOCK"
     protocol    = "all"
 
-    description = "Allow all traffic from the private-db subnet in the GAIA account (Cross connection)."
+    description = "Allow all traffic from the private-db GAIA subnet."
   }
 
-  # Allows all ingress traffic from the private mgmt subnet
+  # Allows all traffic from the private k8 POSEIDON subnet
   ingress_security_rules {
-    source      = local.networking.cidr.subnets.private_mgmt
+    source      = local.networking.cidr.subnets.private_k8_poseidon
     source_type = "CIDR_BLOCK"
     protocol    = "all"
 
-    description = "Allow all traffic from the private-mgmt subnet."
+    description = "Allow all traffic from the private-k8 POSEIDON subnet."
   }
 
-  # Allows all ingress traffic from the public web subnet
+  # Allows all ingress traffic from the private k8 api POSEIDON subnet
   ingress_security_rules {
-
-    source      = local.networking.cidr.subnets.public_web
+    source      = local.networking.cidr.subnets.private_k8_api_poseidon
     source_type = "CIDR_BLOCK"
     protocol    = "all"
 
-    description = "Allow all traffic from the public-web subnet."
+    description = "Allow all traffic from the private-k8-api POSEIDON subnet."
   }
 
-  # Allows all egress traffic to the internet
+  # Allow all egress traffic to the internet
   egress_security_rules {
+
     destination      = "0.0.0.0/0"
     destination_type = "CIDR_BLOCK"
     protocol         = "all"
@@ -80,14 +94,76 @@ resource "oci_core_security_list" "private_web" {
   freeform_tags = local.tags.defaults
 }
 
-resource "oci_core_security_list" "public_web" {
+resource "oci_core_security_list" "public_k8" {
 
   compartment_id = local.values.compartments.production
-  vcn_id         = oci_core_vcn.web.id
+  vcn_id         = oci_core_vcn.dev.id
 
-  display_name = "public-web-sl"
+  display_name = "public-k8-sl"
 
-  # Allows all egress traffic to the internet
+  # ingress_security_rules {
+  #   # Allows K8 traffic from the internet
+
+  #   source      = "0.0.0.0/0"
+  #   source_type = "CIDR_BLOCK"
+  #   protocol    = 6 # TCP
+
+  #   tcp_options {
+  #     min = 6443
+  #     max = 6443
+  #   }
+  # }
+
+  ingress_security_rules {
+    # Allows HTTPS traffic from the internet
+
+    source      = "0.0.0.0/0"
+    source_type = "CIDR_BLOCK"
+    protocol    = 6 # TCP
+
+    tcp_options {
+      min = 443
+      max = 443
+    }
+  }
+
+  ingress_security_rules {
+    # Allows HTTP traffic from the internet
+
+    source      = "0.0.0.0/0"
+    source_type = "CIDR_BLOCK"
+    protocol    = 6 # TCP
+
+    tcp_options {
+      min = 80
+      max = 80
+    }
+  }
+
+  # ingress_security_rules {
+  #   # Allows port 8080 traffic from the internet
+
+  #   source      = "0.0.0.0/0"
+  #   source_type = "CIDR_BLOCK"
+  #   protocol    = 6 # TCP
+
+  #   tcp_options {
+  #     min = 8080
+  #     max = 8080
+  #   }
+  # }
+
+  ingress_security_rules {
+
+    # Alows all traffic from the VCN CIDR
+
+    source      = local.networking.cidr.vcn.dev
+    source_type = "CIDR_BLOCK"
+    protocol    = "all"
+
+    description = "Allow all traffic from the VCN CIDR"
+  }
+
   egress_security_rules {
 
     destination      = "0.0.0.0/0"
@@ -96,46 +172,6 @@ resource "oci_core_security_list" "public_web" {
 
     description = "Allow all outbound traffic to the internet."
 
-  }
-
-  # Allows all ingress traffic from the web subnet
-  ingress_security_rules {
-
-    source      = local.networking.cidr.vcn.web
-    source_type = "CIDR_BLOCK"
-    protocol    = "all"
-
-    description = "Allow all traffic for the web vcn's cidr block."
-  }
-
-  # Allows all ingress HTTP traffic from the internet
-  ingress_security_rules {
-
-    source      = "0.0.0.0/0"
-    source_type = "CIDR_BLOCK"
-    protocol    = 6 #* TCP protocol code
-
-    description = "Allow Inbound HTTP Traffic from the Internet"
-
-    tcp_options {
-      max = 80
-      min = 80
-    }
-  }
-
-  # Allows all ingress HTTPS traffic from the internet
-  ingress_security_rules {
-
-    source      = "0.0.0.0/0"
-    source_type = "CIDR_BLOCK"
-    protocol    = 6 #* TCP protocol code
-
-    description = "Allow Inbound HTTPS Traffic from the Internet"
-
-    tcp_options {
-      max = 443
-      min = 443
-    }
   }
 
   freeform_tags = local.tags.defaults

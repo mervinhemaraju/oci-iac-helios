@@ -1,0 +1,74 @@
+# Route Tables
+resource "oci_core_route_table" "public_web" {
+
+  compartment_id = local.values.compartments.production
+  vcn_id         = oci_core_vcn.web.id
+
+  display_name = "route-table-public-web"
+
+  # Route to the Internet gateway
+  route_rules {
+
+    network_entity_id = oci_core_internet_gateway.web.id
+
+    description      = "Route to the Internet Gateway (Internet Access)"
+    destination      = "0.0.0.0/0"
+    destination_type = "CIDR_BLOCK"
+  }
+
+  freeform_tags = local.tags.defaults
+}
+
+resource "oci_core_route_table" "private_web" {
+  compartment_id = local.values.compartments.production
+  vcn_id         = oci_core_vcn.web.id
+
+  display_name = "route-table-private-web"
+
+  # Route to the NAT gateway
+  route_rules {
+
+    network_entity_id = oci_core_nat_gateway.web.id
+
+    description      = "Route to the NAT Gateway (Outbound Internet Access)"
+    destination      = "0.0.0.0/0"
+    destination_type = "CIDR_BLOCK"
+  }
+
+  # Route to the DRG database gateway in GAIA for cross connection
+  route_rules {
+
+    network_entity_id = local.networking.gateways.gaia_database_drg
+
+    description      = "Route to the GAIA Database account tenant's VCN (VCN Peering to GAIA Account)"
+    destination      = local.networking.cidr.subnets.private_database_gaia
+    destination_type = "CIDR_BLOCK"
+  }
+
+  freeform_tags = local.tags.defaults
+}
+
+resource "oci_core_route_table" "private_mgmt" {
+  compartment_id = local.values.compartments.production
+  vcn_id         = oci_core_vcn.web.id
+
+  display_name  = "route-table-private-mgmt"
+  freeform_tags = local.tags.defaults
+}
+
+
+# Route Table Attachments
+resource "oci_core_route_table_attachment" "public_web" {
+  subnet_id      = oci_core_subnet.public_web.id
+  route_table_id = oci_core_route_table.public_web.id
+}
+
+resource "oci_core_route_table_attachment" "private_mgmt" {
+  subnet_id      = oci_core_subnet.private_mgmt.id
+  route_table_id = oci_core_route_table.private_mgmt.id
+}
+
+resource "oci_core_route_table_attachment" "private_web" {
+  subnet_id      = oci_core_subnet.private_web.id
+  route_table_id = oci_core_route_table.private_web.id
+}
