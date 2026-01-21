@@ -37,13 +37,13 @@ resource "oci_core_route_table" "private_k8" {
   }
 
   # Route to GAIA via LPG (same region) - REPLACE the existing DRG rule for Gaia
-  # route_rules {
-  #   network_entity_id = oci_core_local_peering_gateway.to_gaia.id # Use LPG, not DRG
+  route_rules {
+    network_entity_id = oci_core_local_peering_gateway.to_gaia.id # Use LPG, not DRG
 
-  #   description      = "Route to the GAIA Database account tenant's VCN (Local VCN Peering to GAIA Account)"
-  #   destination      = local.networking.cidr.subnets.private_database_gaia
-  #   destination_type = "CIDR_BLOCK"
-  # }
+    description      = "Route to the GAIA Database account tenant's VCN (Local VCN Peering to GAIA Account)"
+    destination      = local.networking.cidr.subnets.private_database_gaia
+    destination_type = "CIDR_BLOCK"
+  }
 
   # Route to the DRG gateway for OCI Poseidon connection
   route_rules {

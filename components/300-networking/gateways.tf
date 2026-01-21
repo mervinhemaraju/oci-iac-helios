@@ -28,14 +28,14 @@ resource "oci_core_drg" "dev" {
 }
 
 # Create a Local Peering Gateway for HELIOS -> GAIA (same region)
-# resource "oci_core_local_peering_gateway" "to_gaia" {
-#   compartment_id = local.values.compartments.production
-#   vcn_id         = oci_core_vcn.dev.id
+resource "oci_core_local_peering_gateway" "to_gaia" {
+  compartment_id = local.values.compartments.production
+  vcn_id         = oci_core_vcn.dev.id
 
-#   display_name = "lpg-to-gaia"
+  display_name = "lpg-to-gaia"
 
-#   # The peer_id references Gaia's LPG - only set on ONE side (requestor)
-#   peer_id = local.networking.gateways.gaia_lpg
+  # The peer_id references Gaia's LPG - only set on ONE side (requestor)
+  peer_id = local.networking.gateways.gaia_lpg
 
-#   freeform_tags = local.tags.defaults
-# }
+  freeform_tags = local.tags.defaults
+}
