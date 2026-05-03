@@ -87,4 +87,3 @@ resource "oci_core_subnet" "private_mgmt" {
     oci_core_vcn.dev
   ]
 }
-

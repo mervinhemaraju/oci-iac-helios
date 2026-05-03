@@ -1,5 +1,7 @@
 # The Terraform Module
 terraform {
+  # The required tf version
+  required_version = "~> 1.11"
 
   # Required providers
   required_providers {
