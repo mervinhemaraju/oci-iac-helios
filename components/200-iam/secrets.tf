@@ -11,4 +11,3 @@ resource "doppler_secret" "helios_groups" {
     }
   )
 }
-

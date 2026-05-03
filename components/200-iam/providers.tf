@@ -12,4 +12,3 @@ provider "oci" {
   private_key  = data.doppler_secrets.oci_creds.map.OCI_API_KEY_PRIVATE
   region       = var.region
 }
-
